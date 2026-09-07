@@ -285,7 +285,9 @@ footer{margin-top:34px;border-top:1px solid var(--bd);padding-top:16px;color:var
 .reshd h2{font-size:15px;margin:0;color:var(--tx)}
 .reshd .bl{font-size:11px;color:var(--mut)}
 .resgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
-.rescard{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;cursor:pointer;transition:.15s}
+.rescard{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;transition:.15s;display:flex;flex-direction:column}
+.resmore{margin-top:10px;align-self:flex-start;background:var(--chip);border:1px solid var(--bd);color:var(--cyan);border-radius:8px;padding:5px 10px;font-size:11.5px;font-weight:700;cursor:pointer}.resmore:hover{border-color:var(--cyan)}
+.rescard.open{border-color:var(--bd2)}.resx{margin-top:6px}.resopen{cursor:pointer}.resopen:hover{text-decoration:underline}
 .rescard:hover{border-color:var(--cyan);transform:translateY(-1px)}
 .rescard .rt{font-weight:700;font-size:13.5px;color:var(--tx);line-height:1.35}
 .rescard .rd{font-size:10.5px;color:var(--mut2);margin:5px 0 7px}
@@ -957,7 +959,7 @@ function renderPredict(){
 const DR=(DATA.deep_research||[]);
 function renderResearch(){
  const el=document.getElementById('research');
- const hd=`<div class="reshd"><h2>🔬 Deep Research</h2><span class="bl">your long-form reports · click a card to read</span><span class="cnt" style="color:var(--mut2)">${DR.length||''}</span></div>`;
+ const hd=`<div class="reshd"><h2>🔬 Deep Research</h2><span class="bl">your long-form reports · “See more” expands the summary · then open the full report</span><span class="cnt" style="color:var(--mut2)">${DR.length||''}</span></div>`;
  if(!DR.length){
   el.innerHTML=hd+`<div class="resempty"><b style="color:var(--tx)">No reports loaded yet.</b> To add one, attach the report to the chat (HTML artifact export or PDF) with a note like <i>“Add to Deep Research: &lt;title&gt;”</i> — it gets converted, embedded here with a summary card, and tagged to its tickers. Updates work the same way: send a new version and it replaces the old one in the next refresh.</div>`;
   return;
@@ -975,16 +977,19 @@ function renderResearch(){
   }
   let comm='';
   if(r.commentary&&r.commentary.length) comm=`<ul class="rescomm">${r.commentary.map(c=>`<li>${c}</li>`).join('')}</ul>`;
+  const open=RX_OPEN.has(i);
   return `
-  <div class="rescard${r.wide?' wide':''}" onclick="openResearch(${i})">
+  <div class="rescard${open&&r.wide?' wide':''}${open?' open':''}" id="rescard-${i}">
    <div class="rt">${r.title}</div>
    <div class="rd">${r.date||''}${r.author?' · '+r.author:''}${r.src?' · '+r.src:''}</div>
    <div class="rs">${r.summary||''}</div>
-   ${kpis}${chart}${comm}
    ${(r.tickers&&r.tickers.length)?`<div class="rtk">${r.tickers.map(t=>`<span>${t}</span>`).join('')}</div>`:''}
-   <div class="resopen">📖 Read the full report →</div>
+   <div class="resx"${open?'':' hidden'}>${kpis}${chart}${comm}<div class="resopen" onclick="event.stopPropagation();openResearch(${i})">📖 Read the full report →</div></div>
+   <button class="resmore" onclick="event.stopPropagation();toggleResearch(${i})">${open?'See less ▴':'See more ▾'}</button>
   </div>`;}).join('')+`</div>`;
 }
+const RX_OPEN=new Set();
+function toggleResearch(i){if(RX_OPEN.has(i))RX_OPEN.delete(i);else RX_OPEN.add(i);renderResearch();const el=document.getElementById('rescard-'+i);if(el&&RX_OPEN.has(i))el.scrollIntoView({behavior:'smooth',block:'nearest'});}
 function openResearch(i){
  const r=DR[i]; if(!r) return;
  const m=document.getElementById('modal');

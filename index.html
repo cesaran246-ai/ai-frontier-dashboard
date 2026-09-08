@@ -187,6 +187,7 @@ footer{margin-top:34px;border-top:1px solid var(--bd);padding-top:16px;color:var
 .kband .km{position:absolute;top:-4px;width:3px;height:22px;background:#fff;border-radius:2px}.kband .ks{position:absolute;top:-4px;width:3px;height:22px;background:var(--cyan);border-radius:2px}
 .kax{display:flex;justify-content:space-between;font-size:10px;color:var(--mut2);font-variant-numeric:tabular-nums}
 .engrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:8px}.enpanel{background:var(--panel2);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;min-width:0}.enpanel .hbar{grid-template-columns:78px 1fr 40px}
+body.searching #calendar,body.searching #predict,body.searching #research{display:none}
 .idx.ghost{border-style:dashed;opacity:.75}
 .idx.ghost .vl{color:var(--mut);font-size:12px}
 /* ---- top tabs ---- */
@@ -348,10 +349,10 @@ footer{margin-top:34px;border-top:1px solid var(--bd);padding-top:16px;color:var
 <div class="pendingbar" id="pending"></div>
 <div class="layout"><div id="maincol">
 <div id="board"></div>
+<div id="browse"></div>
 <div id="calendar"></div>
 <div id="predict"></div>
 <div id="research"></div>
-<div id="browse"></div>
 </div><aside id="earnrail"></aside></div>
 <footer>
  <div><b>Data sources:</b> Prices, technicals, analyst ratings &amp; fundamentals — Stocklake. VIX/breadth/fear-greed — Stocklake. Brent, Gold, Silver, BTC, ETH, 10Y Treasury — Alpha Vantage. Retail sentiment &amp; messages — Stocktwits. Insider (Form 4), net buy/sell &amp; float — Massive/SEC. Institutional % &amp; top holders — Alpha Vantage (13F). Earnings digests — Bigdata.com. Charts — Massive (~2yr daily, all names) + Alpha Vantage (monthly long-history for NVDA/MSFT/AMZN). Index levels via liquid ETF proxies where noted.</div>
@@ -534,6 +535,7 @@ function render(){
   ts.sort((a,b)=>key(b)-key(a));board.innerHTML=`<div class="grid">${ts.map(card).join('')}</div>`;
  }
  renderBrowse(q);
+ document.body.classList.toggle('searching',!!q);
 }
 function renderBrowse(q){
  const el=document.getElementById('browse');
@@ -546,7 +548,7 @@ function renderBrowse(q){
  const keys=Object.keys(CAT).filter(t=>t.toLowerCase().includes(q)||(CAT[t].name||'').toLowerCase().includes(q));
  const rank=t=>{const base=t.toLowerCase()===q?0:t.toLowerCase().startsWith(q)?1:2;return base*2+((CAT[t].b||CAT[t].k||CAT[t].x)?1:0);};
  keys.sort((a,b)=>rank(a)-rank(b)||a.localeCompare(b));
- if(!keys.length){el.innerHTML=`<div class="browsehd"><h2>Add from S&amp;P 500 / Nasdaq-100</h2><span class="bl">No catalog match for “${q}”. These are the ~486 names outside your default lists.</span></div>`;return;}
+ if(!keys.length){el.innerHTML=`<div class="browsehd"><h2>Add from the catalog</h2><span class="bl">No match for “${q}” among the ${Object.keys(CAT).length.toLocaleString()} searchable names (S&amp;P 500 · Nasdaq-100 · US small/mid caps · KOSPI). Try the ticker or part of the company name.</span></div>`;return;}
  const CAP=90;const shown=keys.slice(0,CAP);
  const more=keys.length>CAP?`<span class="bl">showing first ${CAP} of ${keys.length}</span>`:`<span class="bl">${keys.length} match${keys.length>1?'es':''}</span>`;
  el.innerHTML=`<div class="browsehd"><h2>Add from the catalog</h2><span class="bl">S&amp;P 500 · Nasdaq-100 · US small/mid caps · KOSPI — click <b style="color:var(--cyan)">+ Add</b> to queue for live tracking</span>${more}</div><div class="grid">${shown.map(browseCard).join('')}</div>`;

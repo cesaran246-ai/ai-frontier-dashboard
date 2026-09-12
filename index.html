@@ -65,6 +65,22 @@ tr.lr.open .seebtn{background:rgba(63,189,241,.28)}
 .ltbl tr.lx .xhint b{color:var(--tx)}
 .ltbl tr.lx .xhint .openbtn{display:inline-block;margin-top:8px;background:var(--cyan);color:#06121c;border:none;border-radius:7px;padding:7px 11px;font-size:11.5px;font-weight:800;cursor:pointer}
 body.searching .vtog{display:none}
+/* ---- Prediction Markets: companies table ---- */
+.pmtbl-wrap{grid-column:1/-1}
+.pmtbl-wrap .ltwrap{border:none;border-radius:0;background:transparent;margin-top:8px}
+.pmtbl{min-width:760px}
+.pmtbl td{white-space:normal;vertical-align:top}
+.pmtbl td.tkc{white-space:nowrap;vertical-align:middle}
+.pmtbl td.pxc{white-space:nowrap;vertical-align:middle;font-size:12px}
+.pmtbl td.nmk{text-align:center;vertical-align:middle;color:var(--mut);white-space:nowrap}
+.pmtbl td.mks{text-align:left;min-width:320px}
+.pmtbl td.mks .pmt-rows{margin-top:0;display:flex;flex-wrap:wrap;gap:3px 16px}
+.pmtbl td.mks .pmt-r{grid-template-columns:8px auto auto;font-size:11px}
+.pmtbl td.cbk{text-align:left;font-size:11px;color:var(--mut);max-width:260px}
+.pmtbl td.cbk b{color:var(--tx)}
+.pmtbl tr.lx td{padding:6px 12px 14px}
+.pmtbl tr.lx td .pmbody{padding:0}
+
 @media(max-width:700px){.ltbl{min-width:760px}}
 .row2{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:9px}
 .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}
@@ -953,6 +969,11 @@ function valRows(keys){
  return `<div class="ps" style="margin:10px 0 2px"><b style="color:var(--tx)">Expected valuation</b> — Kalshi lists no valuation markets for these names (only timing), so these are press-reported figures, refreshed weekly.</div><div style="overflow-x:auto"><table class="cmt"><tr><th></th><th style="text-align:left">Last private mark</th><th style="text-align:left">Reported IPO valuation / target</th><th style="text-align:left">Source</th></tr>${rows}</table></div>`;
 }
 function pmDelta(H){if(!H||H.length<2)return '';const d=Math.round((H[H.length-1].p-H[0].p)*100);const cls=d>1?'up':d<-1?'dn':'';return `<span class="kd ${cls}">${kspark(H,d>1?'#2fbf71':d<-1?'#f2555a':'#a78bfa')}${d>0?'+':''}${d}<span style="color:var(--mut2)"> since ${H[0].d.slice(5).replace('-','/')}</span></span>`;}
+const PMB={};const PMOPEN=new Set();
+function togglePM(t){if(PMOPEN.has(t))PMOPEN.delete(t);else PMOPEN.add(t);const on=PMOPEN.has(t);
+ const tr=document.getElementById('pmr-'+t),tx=document.getElementById('pmx-'+t);if(!tr||!tx)return;
+ tr.classList.toggle('open',on);tx.hidden=!on;tr.querySelector('.seebtn').textContent=on?'Hide':'Details';
+ if(on&&!tx.dataset.done){tx.querySelector('td').innerHTML=`<div class="pmbody">${PMB[t]||''}</div>`;tx.dataset.done='1';}}
 function pmFold(head,body,open){return `<details class="pmcard pmfold"${open?' open':''}><summary>${head}</summary><div class="pmbody">${body}</div></details>`;}
 function pmTileRow(m,col){const F=pmU(m);const H=m.history||[],last=H[H.length-1];const isD=m.kind==='date';
  const v=isD?(m.p50[0]?'~'+F(m.p50[0]):'—'):(m.p50[1]==='≤'?'&lt;'+F(m.p50[0]):m.p50[1]==='≥'?'&gt;'+F(m.p50[0]):'≈'+F(m.p50[0]));
@@ -1104,7 +1125,7 @@ function renderPredict(){
    <div class="pn">${Wk.prev?`Previous week (${Wk.prev.range}): ${Wk.prev.note}. `:''}Contracts roll automatically — the weekly one every Monday, the monthly one on the 1st — and the history keeps accumulating one point per refresh so the chart shows how the market's view has moved. Normal pre-crisis traffic was roughly 100+ transits a day, which is why the year-avg strikes run to 120.</div>`,false);
  }
  // Stock-linked prediction markets (keyed by ticker) — reusable: one wide card per ticker with a time chart + ladders
- let spm='';
+ let spmRows='';
  const SP=KD.stock_pm||{};
  Object.keys(SP).filter(k=>!k.startsWith('_')).forEach(tk=>{
   const B0=SP[tk];const c=C[tk]||{};const B=Object.assign({},B0,{markets:(B0.markets||[]).filter(m=>m.pm_tile!==false)});if(!B.markets.length&&!(B.call&&B.call.items&&B.call.items.length))return;
@@ -1122,8 +1143,13 @@ function renderPredict(){
   const callRow=B.call&&B.call.items&&B.call.items.length?`<div class="pmt-call">🎙 <b>Call ${B.call.when?B.call.when.replace(' after close',''):B.call.date}</b> · ${B.call.items.slice(0,3).map(i=>`${i.label} <b>${kpct(i.p)}</b>`).join(' · ')}${B.call.items.length>3?` <span style="color:var(--mut2)">+${B.call.items.length-3} topics</span>`:''}</div>`:'';
   const head=`<div class="pmt-h"><span class="pmt-tk">${tk}</span><span class="pmt-nm" title="${c.name||''}">${nm}</span>${c.price?`<span class="b" style="font-size:10px;color:${c.change_pct>=0?'var(--grn)':'var(--red)'};background:${c.change_pct>=0?'rgba(47,191,113,.12)':'rgba(242,85,90,.12)'}">$${px(c.price).replace('$','')} ${c.change_pct!=null?(c.change_pct>=0?'+':'')+c.change_pct.toFixed(2)+'%':''}</span>`:''}</div><div class="pmt-m"><span class="pmt-n">${B.markets.length} market${B.markets.length===1?'':'s'}${B.call?' + call book':''} · ${allH.length} pts · Kalshi</span><span class="pmx"></span></div><div class="pmt-rows">${B.markets.map((m,i)=>pmTileRow(m,mcol(m))).join('')}</div>${callRow}`;
   const body=`<div class="pt" style="font-size:12.5px;margin-top:4px">${B.theme||'stock-linked prediction markets'}</div><div class="ps">${B.src_note||'Kalshi contracts tied to a name you track. Lines = market-implied probability the headline strike is topped, over time.'}</div>${svg4}${legend}<div class="engrid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">${panels}${callPanel}</div>${B.why?`<div class="pn">${B.why} ${B.roll_note||''} The same data shows on the ${tk} tile (badge) and inside its detail panel${B.markets.some(m=>m.cal!==false)?' and on its earnings-calendar entry':''}.</div>`:''}`;
-  spm+=pmFold(head,body,false);
+  PMB[tk]=body;const on=PMOPEN.has(tk);
+  const chips=`<div class="pmt-rows">${B.markets.map((m,i)=>pmTileRow(m,mcol(m))).join('')}</div>`;
+  const cbk=B.call&&B.call.items&&B.call.items.length?`🎙 <b>Call ${B.call.when?B.call.when.replace(' after close',''):B.call.date}</b>${B.call.settled?' <span style="color:var(--grn)">✓ settled</span>':''}<br>${B.call.items.slice(0,3).map(i=>`${i.label} <b>${kpct(i.p)}</b>`).join(' · ')}${B.call.items.length>3?` <span style="color:var(--mut2)">+${B.call.items.length-3}</span>`:''}`:'<span style="color:var(--mut2)">—</span>';
+  const pxc=c.price?`<span class="${c.change_pct>=0?'up':'down'}">${px(c.price)}<br><small>${c.change_pct!=null?(c.change_pct>=0?'+':'')+c.change_pct.toFixed(2)+'%':''}</small></span>`:'—';
+  spmRows+=`<tr class="lr pmr${on?' open':''}" id="pmr-${tk}" onclick="togglePM('${tk}')"><td class="tkc"><span style="color:var(--cyan);cursor:pointer" onclick="event.stopPropagation();openM('${tk}')" title="Open the ${tk} card">${tk}</span><small title="${c.name||''}">${nm}</small></td><td class="pxc">${pxc}</td><td class="nmk">${B.markets.length}${B.call?'<br><small>+ call</small>':''}</td><td class="mks">${chips}</td><td class="cbk">${cbk}</td><td class="c stk"><button class="seebtn" onclick="event.stopPropagation();togglePM('${tk}')">${on?'Hide':'Details'}</button></td></tr><tr class="lx pmxr" id="pmx-${tk}"${on?'':' hidden'}><td colspan="6">${on?`<div class="pmbody">${body}</div>`:''}</td></tr>`;
  });
+ const spm=spmRows?`<div class="pmcard wide pmtbl-wrap"><div class="pt">Kalshi markets by company</div><div class="ps">one row per name · chips = the headline read of each market (Δ since first read) · <b>Details</b> expands the ladders, the change-over-time chart and the earnings-call book · ticker opens the stock card</div><div class="ltwrap"><table class="ltbl pmtbl"><thead><tr><th>Company</th><th>Price</th><th class="c">Markets</th><th style="text-align:left">Prediction markets · headline read</th><th style="text-align:left">Earnings-call book</th><th class="c stk">Details</th></tr></thead><tbody>${spmRows}</tbody></table></div></div>`:'';
  // Standalone frontier cards: quantum timing + US-stake board (own cards, like the Fed path / IPO race — not company tiles)
  let quantum='',stake='';
  const Q=KD.quantum;
@@ -1143,7 +1169,7 @@ function renderPredict(){
  const secQ=`<div class="pmsec"><h3>⚛️ Frontier tech &amp; industrial policy</h3><span class="bl">quantum timing · the US-stake board — each also shows on the matching stock cards in My List</span></div>`;
  const nco=Object.keys(SP).filter(k=>!k.startsWith('_')&&SP[k].markets&&SP[k].markets.some(m=>m.pm_tile!==false)).length;
  const secM=`<div class="pmsec"><h3>🌐 Macro & geopolitics</h3><span class="bl">Fed path · inflation prints · BoJ · recession odds · Texas grid · Hormuz — click a tile for the ladders and the change-over-time chart</span></div>`;
- const secC=`<div class="pmsec"><h3>🏢 Companies on your lists</h3><span class="bl">${nco} names · Kalshi KPI ladders and earnings-call books, one tile per company — click to expand</span></div>`;
+ const secC=`<div class="pmsec"><h3>🏢 Companies on your lists</h3><span class="bl">${nco} names · Kalshi KPI ladders and earnings-call books, one row per company — Details expands the full view</span></div>`;
  const secI=`<div class="pmsec"><h3>🚀 AI IPO pipeline</h3><span class="bl">timing curves and reported valuations</span></div>`;
  el.innerHTML=hd+`<div class="pmgrid">${secM}${fed}${lad}${boj}${bin}${energy}${hormuz}${(quantum||stake)?secQ+quantum+stake:''}${secC}${spm}${secI}${ipo}${pipe}</div><div class="calmeta">${KD.note||''}</div>`;
 }

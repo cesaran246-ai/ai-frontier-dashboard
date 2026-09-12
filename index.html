@@ -899,7 +899,7 @@ let CALR={preset:'all',from:null,to:null};
 function _d(dt){return dt.toISOString().slice(0,10);}
 function calRange(preset){const t=new Date();t.setUTCHours(12,0,0,0);const add=n=>{const x=new Date(t);x.setUTCDate(x.getUTCDate()+n);return _d(x);};const today=_d(t);
  if(preset==='today')return[today,today];
- if(preset==='week'){const dow=(t.getUTCDay()+6)%7;return[add(-dow),add(6-dow)];}
+ if(preset==='week'){const dow=(t.getUTCDay()+6)%7;if(dow>=5)return[add(7-dow),add(13-dow)];return[add(-dow),add(6-dow)];}
  if(preset==='n7')return[today,add(6)];
  if(preset==='n14')return[today,add(13)];
  if(preset==='n30')return[today,add(29)];
@@ -907,6 +907,8 @@ function calRange(preset){const t=new Date();t.setUTCHours(12,0,0,0);const add=n
  if(preset==='nmonth'){const a=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+1,1,12)),e=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+2,0,12));return[_d(a),_d(e)];}
  return[null,null];}
 function setCalRange(preset){const r=calRange(preset);CALR={preset,from:r[0],to:r[1]};renderCalendar();}
+// default view = "This week" for everyone (Cesar, Sep 12): on Sat/Sun the current week is mostly over, so it rolls to the coming Mon–Sun
+(function(){const r=calRange('week');CALR={preset:'week',from:r[0],to:r[1]};})();
 function setCalCustom(){const f=document.getElementById('cal-from').value||null,t=document.getElementById('cal-to').value||null;CALR={preset:(f||t)?'custom':'all',from:f,to:t};renderCalendar();}
 const CATN={us:'US',jp:'Japan',eu:'Euro area',corp:'Corporate'};
 function numOf(v){if(v==null||v==='')return null;const m=String(v).replace(/,/g,'').match(/-?−?\+?\d+(\.\d+)?/);if(!m)return null;return parseFloat(m[0].replace('−','-').replace('+',''));}

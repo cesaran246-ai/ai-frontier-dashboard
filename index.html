@@ -250,6 +250,13 @@ body.searching #calendar,body.searching #predict,body.searching #research{displa
 .calhd{display:flex;align-items:baseline;gap:10px;margin:14px 0 8px;flex-wrap:wrap}
 .calhd h2{font-size:15px;margin:0;color:var(--tx)}.calhd .bl{font-size:11px;color:var(--mut)}
 .calfil{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+.caldr{align-items:center;margin-top:-4px}
+.caldr .lbl{font-size:10.5px;color:var(--mut2);text-transform:uppercase;letter-spacing:.5px;margin-right:2px}
+.caldr .sep{width:1px;height:18px;background:var(--bd);margin:0 4px}
+.caldr input[type=date]{background:var(--card);border:1px solid var(--bd);color:var(--tx);border-radius:8px;padding:5px 8px;font-size:11.5px;font-family:inherit;color-scheme:dark}
+.caldr input[type=date]:focus{outline:none;border-color:var(--cyan)}
+.caldr .cnt{font-size:11px;color:var(--mut2);margin-left:auto}
+.caldr .cf.x{color:var(--red);border-color:rgba(242,85,90,.35)}
 .cf{font:600 11px/1 inherit;font-family:inherit;color:var(--mut);background:var(--card);border:1px solid var(--bd);border-radius:99px;padding:6px 11px;cursor:pointer}
 .cf:hover{color:var(--tx);border-color:var(--cyan)}.cf.on{color:var(--cyan);border-color:var(--cyan);background:rgba(56,189,248,.08)}
 .calday{display:grid;grid-template-columns:86px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--bd)}
@@ -888,6 +895,19 @@ function renderEarnRail(){
 }
 // ---- events calendar ----
 let CALF='all';
+let CALR={preset:'all',from:null,to:null};
+function _d(dt){return dt.toISOString().slice(0,10);}
+function calRange(preset){const t=new Date();t.setUTCHours(12,0,0,0);const add=n=>{const x=new Date(t);x.setUTCDate(x.getUTCDate()+n);return _d(x);};const today=_d(t);
+ if(preset==='today')return[today,today];
+ if(preset==='week'){const dow=(t.getUTCDay()+6)%7;return[add(-dow),add(6-dow)];}
+ if(preset==='n7')return[today,add(6)];
+ if(preset==='n14')return[today,add(13)];
+ if(preset==='n30')return[today,add(29)];
+ if(preset==='month'){const e=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+1,0,12));return[today.slice(0,8)+'01',_d(e)];}
+ if(preset==='nmonth'){const a=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+1,1,12)),e=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+2,0,12));return[_d(a),_d(e)];}
+ return[null,null];}
+function setCalRange(preset){const r=calRange(preset);CALR={preset,from:r[0],to:r[1]};renderCalendar();}
+function setCalCustom(){const f=document.getElementById('cal-from').value||null,t=document.getElementById('cal-to').value||null;CALR={preset:(f||t)?'custom':'all',from:f,to:t};renderCalendar();}
 const CATN={us:'US',jp:'Japan',eu:'Euro area',corp:'Corporate'};
 function numOf(v){if(v==null||v==='')return null;const m=String(v).replace(/,/g,'').match(/-?−?\+?\d+(\.\d+)?/);if(!m)return null;return parseFloat(m[0].replace('−','-').replace('+',''));}
 function vsTag(m,isCorp){
@@ -946,8 +966,14 @@ function renderCalendar(){
  if(!E.length){el.innerHTML=hd+`<div class="calempty">No events loaded yet.</div>`;return;}
  const F=[['all','All'],['key','⭐ Key only'],['us','🇺🇸 US macro'],['jp','🇯🇵 Japan'],['eu','🇪🇺 Euro area'],['corp','🏢 Corporate']];
  const fil=`<div class="calfil">${F.map(f=>`<button class="cf${CALF===f[0]?' on':''}" onclick="CALF='${f[0]}';renderCalendar()">${f[1]}</button>`).join('')}</div>`;
- const keep=e=>CALF==='all'||(CALF==='key'?(e.key||(e.cat==='corp'&&e.imp===3)):e.cat===CALF);
+ const keepCat=e=>CALF==='all'||(CALF==='key'?(e.key||(e.cat==='corp'&&e.imp===3)):e.cat===CALF);
+ const inRange=e=>(!CALR.from||e.date>=CALR.from)&&(!CALR.to||e.date<=CALR.to);
+ const keep=e=>keepCat(e)&&inRange(e);
  const list=E.filter(keep);
+ const P=[['all','All dates'],['today','Today'],['week','This week'],['n7','Next 7d'],['n14','Next 14d'],['month','This month'],['n30','Next 30d'],['nmonth','Next month']];
+ const fmtR=d=>d?new Date(d+'T12:00:00Z').toLocaleDateString('en',{month:'short',day:'numeric',timeZone:'UTC'}):'';
+ const rangeTxt=CALR.preset==='all'?`${list.length} events in the full window`:`${list.length} event${list.length===1?'':'s'} · ${CALR.from&&CALR.to?fmtR(CALR.from)+' – '+fmtR(CALR.to):CALR.from?'from '+fmtR(CALR.from):'through '+fmtR(CALR.to)}`;
+ const dr=`<div class="calfil caldr"><span class="lbl">📆 Dates</span>${P.map(f=>`<button class="cf${CALR.preset===f[0]?' on':''}" onclick="setCalRange('${f[0]}')">${f[1]}</button>`).join('')}<span class="sep"></span><input type="date" id="cal-from" value="${CALR.from||''}" onchange="setCalCustom()" title="From"/><span class="lbl">to</span><input type="date" id="cal-to" value="${CALR.to||''}" onchange="setCalCustom()" title="To"/><span class="cnt" style="display:inline-flex;align-items:center;gap:8px">${rangeTxt}${CALR.preset!=='all'?`<button class="cf x" onclick="setCalRange('all')" title="Clear the date filter">✕ clear</button>`:''}</span></div>`;
  const today=new Date();const tkey=today.toISOString().slice(0,10);
  const days={};list.forEach(e=>{(days[e.date]=days[e.date]||[]).push(e);});
  const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -955,10 +981,10 @@ function renderCalendar(){
   return `<div class="calday${past?' past':''}${d===tkey?' today':''}"><div class="cald"><div class="dn">${dt.getUTCDate()}</div><div class="dm">${MON[dt.getUTCMonth()]}</div><div class="dw">${DOW[dt.getUTCDay()]}${d===tkey?' · today':''}</div></div><div>${days[d].map(calEv).join('')}</div></div>`;};
  const pastDays=Object.keys(days).filter(d=>d<tkey).sort(),upDays=Object.keys(days).filter(d=>d>=tkey).sort();
  const pastN=pastDays.reduce((n,d)=>n+days[d].length,0);
- const pastHtml=pastDays.length?`<details class="calpast" open><summary>Recent — last 2 weeks with results (${pastN})</summary>${pastDays.map(dayBlock).join('')}</details>`:'';
- const upHtml=upDays.length?upDays.map(dayBlock).join(''):`<div class="calempty">Nothing upcoming in this filter.</div>`;
+ const pastHtml=pastDays.length?`<details class="calpast" open><summary>Recent — ${CALR.preset==='all'?'last 2 weeks with results':'earlier dates in this range'} (${pastN})</summary>${pastDays.map(dayBlock).join('')}</details>`:'';
+ const upHtml=upDays.length?upDays.map(dayBlock).join(''):`<div class="calempty">Nothing ${CALR.preset==='all'?'upcoming in this filter':'scheduled in this date range'+(CALF!=='all'?' for this category':'')}.</div>`;
  const meta=`<div class="calmeta">Window ${M.window||''} · built ${M.built||''} · sources: ${M.sources||''}. Dates tagged <i>date est.</i> follow the agency's usual cadence and are confirmed when the official calendar posts. Above/below tags compare the actual to consensus, not good/bad.</div>`;
- el.innerHTML=hd+fil+pastHtml+upHtml+meta;
+ el.innerHTML=hd+fil+dr+pastHtml+upHtml+meta;
 }
 // ---- prediction markets (Kalshi) ----
 function kpct(p){return Math.round(p*100)+'%';}

@@ -35,6 +35,37 @@ h1{font-size:19px;margin:0;font-weight:700;letter-spacing:.2px}h1 span{color:var
 .cn{font-size:11px;color:var(--mut);margin-top:1px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .px{text-align:right}.px .p{font-size:16px;font-weight:700}.px .c{font-size:12px;font-weight:600}
 .spark{margin-top:9px;height:34px;width:100%;display:block}
+/* ---- My List: compact table view ---- */
+.vtog{display:inline-flex;border:1px solid var(--bd);border-radius:8px;overflow:hidden}
+.vtog button{font:600 12px/1 inherit;font-family:inherit;background:var(--panel);color:var(--mut);border:none;padding:8px 12px;cursor:pointer}
+.vtog button.on{background:rgba(63,189,241,.14);color:var(--cyan)}
+.ltwrap{overflow-x:auto;border:1px solid var(--bd);border-radius:12px;background:var(--panel)}
+.ltbl{width:100%;border-collapse:collapse;font-size:12px;min-width:820px}
+.ltbl th{font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut2);font-weight:700;text-align:right;padding:8px 7px;border-bottom:1px solid var(--bd);white-space:nowrap;background:var(--panel2)}
+.ltbl th:first-child,.ltbl td:first-child{text-align:left}
+.ltbl th.c,.ltbl td.c{text-align:center}
+.ltbl td{padding:7px 7px;border-bottom:1px solid var(--bd);text-align:right;font-variant-numeric:tabular-nums;color:var(--tx);white-space:nowrap}
+.ltbl tr.lr{cursor:pointer;transition:background .12s}
+.ltbl tr.lr:hover td{background:rgba(63,189,241,.05)}
+.ltbl tr.lr.open td{background:rgba(63,189,241,.08);border-bottom-color:transparent}
+.ltbl td.tkc{font-weight:800;font-size:13.5px;letter-spacing:.3px}
+.ltbl td.tkc small{display:block;font-weight:400;font-size:10px;color:var(--mut);max-width:150px;overflow:hidden;text-overflow:ellipsis;letter-spacing:0}
+.ltbl td.pxc{font-weight:700;font-size:13.5px}
+.ltbl td.chc{font-weight:700}
+.ltbl td.spc{width:74px;padding:4px 6px}.ltbl td.spc .spark{height:22px;margin:0;width:68px}
+.ltbl td.rt{font-size:10.5px;color:var(--mut);white-space:nowrap}
+.seebtn{font:700 11px/1 inherit;font-family:inherit;background:rgba(63,189,241,.12);border:1px solid rgba(63,189,241,.4);color:var(--cyan);border-radius:7px;padding:6px 9px;cursor:pointer;white-space:nowrap}
+.ltbl th.stk,.ltbl td.stk{position:sticky;right:0;background:var(--panel);box-shadow:-6px 0 8px -6px rgba(0,0,0,.6)}.ltbl th.stk{background:var(--panel2)}.ltbl tr.lr:hover td.stk{background:#141b2c}.ltbl tr.lr.open td.stk{background:#152238}
+.seebtn:hover{background:rgba(63,189,241,.24)}
+tr.lr.open .seebtn{background:rgba(63,189,241,.28)}
+.ltbl tr.lx td{padding:0 10px 12px;background:rgba(63,189,241,.04);white-space:normal;text-align:left}
+.ltbl tr.lx .card{max-width:520px;cursor:pointer}
+.ltbl tr.lx .xrow{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;padding-top:4px}
+.ltbl tr.lx .xhint{font-size:11px;color:var(--mut2);max-width:260px;line-height:1.5;padding-top:6px}
+.ltbl tr.lx .xhint b{color:var(--tx)}
+.ltbl tr.lx .xhint .openbtn{display:inline-block;margin-top:8px;background:var(--cyan);color:#06121c;border:none;border-radius:7px;padding:7px 11px;font-size:11.5px;font-weight:800;cursor:pointer}
+body.searching .vtog{display:none}
+@media(max-width:700px){.ltbl{min-width:760px}}
 .row2{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:9px}
 .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}
 .mini{background:var(--panel2);border:1px solid var(--bd);border-radius:8px;padding:6px 7px}
@@ -148,7 +179,8 @@ footer{margin-top:34px;border-top:1px solid var(--bd);padding-top:16px;color:var
 .clrbtn{background:transparent;border:1px solid var(--bd2);color:var(--mut);border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer}
 /* earnings rail */
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 296px;gap:18px;align-items:start}
-@media(max-width:1150px){.layout{grid-template-columns:1fr}}
+@media(max-width:1150px){.layout{grid-template-columns:minmax(0,1fr)}}
+#maincol,.sector{min-width:0}
 #earnrail{position:sticky;top:12px}
 @media(max-width:1150px){#earnrail{position:static}}
 .erhd{display:flex;align-items:baseline;gap:8px;border-bottom:1px solid var(--bd);padding-bottom:7px;margin-bottom:10px}
@@ -371,6 +403,7 @@ details.pmfold>summary:hover{background:rgba(168,85,247,.04)}details.pmfold[open
   <option value="sector">Sort: by sector</option><option value="chg">Sort: % change ▼</option><option value="chgu">Sort: % change ▲</option>
   <option value="rsi">Sort: RSI ▼</option><option value="upside">Sort: analyst upside ▼</option><option value="sent">Sort: retail sentiment ▼</option><option value="mcap">Sort: market cap ▼</option>
  </select>
+ <div class="vtog" id="vtog" title="My List layout"><button id="vt-table" onclick="setView('table')">☰ Table</button><button id="vt-cards" onclick="setView('cards')">▦ Cards</button></div>
  <div class="legend"><i><b style="color:var(--grn)">▲</b> up</i><i><b style="color:var(--red)">▼</b> down</i><i>RSI <b style="color:var(--grn)">&lt;30</b>/<b style="color:var(--red)">&gt;70</b></i><i>search a ticker → <b style="color:var(--cyan)">+ Add</b> to track it live</i></div>
 </div>
 <div class="pendingbar" id="pending"></div>
@@ -570,16 +603,48 @@ function browseCard(t){
    <button class="addbtn${on?' on':''}" onclick="event.stopPropagation();toggleTick('${t}')">${on?'✓ Queued — remove':'+ Add &amp; track'}</button></div>
  </div>`;
 }
+// ---- My List view: compact table (default) or full card grid ----
+const VKEY='aiF_listView';
+let VIEW=(()=>{try{return localStorage.getItem(VKEY)||'table';}catch(e){return 'table';}})();
+const OPEN=new Set();
+function setView(v){VIEW=v;try{localStorage.setItem(VKEY,v);}catch(e){}render();}
+function toggleRow(t){if(OPEN.has(t))OPEN.delete(t);else OPEN.add(t);
+ const tr=document.getElementById('lr-'+t),tx=document.getElementById('lx-'+t);if(!tr||!tx)return;
+ const on=OPEN.has(t);tr.classList.toggle('open',on);tx.hidden=!on;tr.querySelector('.seebtn').textContent=on?'Hide card':'See card';
+ if(on&&!tx.dataset.done){tx.querySelector('td').innerHTML=`<div class="xrow">${card(t)}<div class="xhint"><b>${t}</b> — full card. Click the card (or the button) for the complete profile: price chart with timeframes, analyst targets &amp; rating distribution, earnings, technicals, ownership, insiders, retail sentiment${pmFor(t)?', Kalshi prediction markets':''}.<br><button class="openbtn" onclick="openM('${t}')">Open full profile ↗</button></div></div>`;tx.dataset.done='1';}}
+function listRow(t){
+ const c=C[t];const u=upside(c);const s=c.sentiment;const on=OPEN.has(t);const tg=(c.atgt&&c.atgt.consensus)?c.atgt.consensus:c.analyst_target;
+ return `<tr class="lr${on?' open':''}" id="lr-${t}" onclick="toggleRow('${t}')">
+  <td class="tkc">${t}<small>${c.name||''}</small></td>
+  <td class="spc">${sparkSVG(t)}</td>
+  <td class="pxc">${px(c.price)}</td>
+  <td class="chc ${cls(c.change_pct)}">${pct(c.change_pct)}</td>
+  <td style="color:${rsiColor(c.rsi)};font-weight:700">${c.rsi??'—'}</td>
+  <td>${c.pe_forward?Math.round(c.pe_forward):'—'}</td>
+  <td>${tg?'$'+Math.round(tg):'—'}<span class="${cls(u)}" style="font-size:10.5px;margin-left:5px">${u==null?'':(u>=0?'+':'')+u.toFixed(0)+'%'}</span></td>
+  <td>${fmtV(c.volume)}</td>
+  <td>${fmtV(c.vol10)}${c.vol10_exact?'':'<span style="color:var(--mut2)"> ≈</span>'}</td>
+  <td>${fmtB(c.market_cap)}</td>
+  <td class="rt"><span class="b ${ratingClass(c.analyst_rating)}" style="padding:2px 6px">${ratingTxt(c.analyst_rating)}</span>${pmFor(t)?' <span class="b ktag" style="padding:2px 6px" title="Kalshi markets tied to this stock">◆</span>':''}${researchIdx(t)>=0?' <span title="Deep Research available">🔬</span>':''}</td>
+  <td class="c stk"><button class="seebtn" onclick="event.stopPropagation();toggleRow('${t}')">${on?'Hide card':'See card'}</button></td>
+ </tr><tr class="lx" id="lx-${t}"${on?'':' hidden'}><td colspan="12"></td></tr>`;
+}
+function listTable(ts){
+ return `<div class="ltwrap"><table class="ltbl"><thead><tr><th>Stock</th><th class="c">60d</th><th>Price</th><th>Day</th><th>RSI</th><th>Fwd P/E</th><th>Cons. target · upside</th><th>Volume</th><th>10d avg</th><th>Mkt cap</th><th>Rating</th><th class="c stk">Card</th></tr></thead><tbody>${ts.map(listRow).join('')}</tbody></table></div>`;
+}
 function render(){
  const q=document.getElementById('q').value.toLowerCase().trim();const sort=document.getElementById('sort').value;const board=document.getElementById('board');
  const match=t=>{const c=C[t];return !q||t.toLowerCase().includes(q)||(c.name||'').toLowerCase().includes(q);};
+ const tb=document.getElementById('vt-table'),cb=document.getElementById('vt-cards');if(tb){tb.classList.toggle('on',VIEW==='table');cb.classList.toggle('on',VIEW!=='table');}
+ const body=ts=>VIEW==='table'?listTable(ts):`<div class="grid">${ts.map(card).join('')}</div>`;
  if(sort==='sector'){
-  board.innerHTML=DATA.sectors.map(sec=>{const ts=sec.tickers.filter(match);if(!ts.length)return'';return `<div class="sector"><div class="sechd"><h2>${sec.name}</h2><span class="bl">${sec.blurb}</span><span class="cnt">${ts.length}</span></div><div class="grid">${ts.map(card).join('')}</div></div>`;}).join('')||'<div class="sub" style="padding:30px 0">No matches.</div>';
+  board.innerHTML=DATA.sectors.map(sec=>{const ts=sec.tickers.filter(match);if(!ts.length)return'';return `<div class="sector"><div class="sechd"><h2>${sec.name}</h2><span class="bl">${sec.blurb}</span><span class="cnt">${ts.length}</span>${sec.avg_change!=null?`<span class="cnt" style="color:${sec.avg_change>=0?'var(--grn)':'var(--red)'}">avg ${pct(sec.avg_change)}</span>`:''}</div>${body(ts)}</div>`;}).join('')||'<div class="sub" style="padding:30px 0">No matches.</div>';
  }else{
   let ts=DATA.sectors.flatMap(s=>s.tickers).filter(match);
   const key={chg:t=>C[t].change_pct??-999,chgu:t=>-(C[t].change_pct??999),rsi:t=>C[t].rsi??-1,upside:t=>upside(C[t])??-999,sent:t=>C[t].sentiment?C[t].sentiment.score:-1,mcap:t=>C[t].market_cap??0}[sort];
-  ts.sort((a,b)=>key(b)-key(a));board.innerHTML=`<div class="grid">${ts.map(card).join('')}</div>`;
+  ts.sort((a,b)=>key(b)-key(a));board.innerHTML=body(ts);
  }
+ for(const t of OPEN){const tx=document.getElementById('lx-'+t);if(tx&&!tx.dataset.done){OPEN.delete(t);toggleRow(t);}}
  renderBrowse(q);
  document.body.classList.toggle('searching',!!q);
 }

@@ -26,7 +26,8 @@
   "project_only_data": [
     {"project": "claude/dashboard_data.json",  "dest": "dashboard_data_v3.json", "role": "per-run company/index/sector data (~1.4MB) — ALWAYS take the project copy, it is the newest"},
     {"project": "claude/kalshi.json",          "dest": "kalshi.json",            "role": "per-run Kalshi state incl. history, archives, settled db"},
-    {"project": "claude/events_overlay.json",  "dest": "events_overlay.json",    "role": "per-run calendar actuals/notes overlay"}
+    {"project": "claude/events_overlay.json",  "dest": "events_overlay.json",    "role": "per-run calendar actuals/notes overlay"},
+    {"project": "claude/av_earnings.csv",      "dest": "av_earnings.csv",        "role": "Alpha Vantage 3-month earnings calendar, pulled on the 10am run and CONSUMED by the 1pm/5pm runs. WITHOUT IT build_events.py silently degrades every corporate earnings row to a Stocklake stub (no EPS estimate, no fiscal-quarter title) — it fails quietly, so always restore it."}
   ],
   "project_only_extras": [
     {"project": "claude/add_pm4.py",                 "role": "template: add a new stock_pm block + earnings-call mentions book"},

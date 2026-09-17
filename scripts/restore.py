@@ -154,6 +154,7 @@ def main():
         {"project": "claude/dashboard_data.json", "dest": "dashboard_data_v3.json"},
         {"project": "claude/kalshi.json", "dest": "kalshi.json"},
         {"project": "claude/events_overlay.json", "dest": "events_overlay.json"},
+        {"project": "claude/av_earnings.csv", "dest": "av_earnings.csv"},
     ]
     missing = [e for e in data_entries if not os.path.exists(os.path.join(dest, e["dest"]))]
     print("\nSTILL NEEDED FROM THE PROJECT (per-run data — the project copy is always the newest):")
@@ -161,6 +162,8 @@ def main():
         print("  none — all data files are already on disk")
     for e in missing:
         print(f"  project_read {e['project']:34s} -> save as {e['dest']}")
+    if any(e["dest"] == "av_earnings.csv" for e in missing):
+        print("    ^^ av_earnings.csv fails SILENTLY if skipped: earnings rows degrade to stubs, no error is raised.")
     print("  project_read claude/prompt_<this-run>.txt      -> the armed trigger names the file")
     print("  project_read claude/refresh-operations-notes.md -> save as _ops_notes.md (read the last section)")
     print("  on-demand only: claude/add_pm4.py · claude/add_pm5.py · claude/migrate_reports.py")

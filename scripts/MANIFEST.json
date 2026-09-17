@@ -1,0 +1,43 @@
+{
+  "_about": "Toolchain manifest for the AI & Frontier Tech dashboard refresh pipeline. restore.py reads this to rebuild an empty /home/claude after the ephemeral cloud container is reclaimed. Paths are relative to the repo's scripts/ folder; 'dest' is the filename restore.py writes into the workspace.",
+  "repo": "cesaran246-ai/ai-frontier-dashboard",
+  "branch": "main",
+  "raw_base": "https://raw.githubusercontent.com/cesaran246-ai/ai-frontier-dashboard/main/scripts/",
+  "updated": "2026-09-17",
+  "code": [
+    {"file": "build_html_v3.py",   "dest": "build_html_v3.py",   "role": "renderer — dashboard_data_v3.json + kalshi/events output -> index.html"},
+    {"file": "build_kalshi.py",    "dest": "build_kalshi.py",    "role": "kalshi.json -> derived PM cards, settled db, history append; prints ROLL DUE lines"},
+    {"file": "build_events.py",    "dest": "build_events.py",    "role": "events_schedule.json + events_overlay.json -> calendar events"},
+    {"file": "roll_pm.py",         "dest": "roll_pm.py",         "role": "auto-roll a settled stock_pm market to the next period (pick / roll)"},
+    {"file": "kpatch.py",          "dest": "kpatch.py",          "role": "incremental kalshi.json writer: fed|lad|dec|ipo|asset|buckets|energy|hormuz|hormuz_pts|asof"},
+    {"file": "spm_set.py",         "dest": "spm_set.py",         "role": "stock_pm ladder / date-curve writer"},
+    {"file": "call_set.py",        "dest": "call_set.py",        "role": "earnings-call mentions book writer"},
+    {"file": "stake_set.py",       "dest": "stake_set.py",       "role": "US-stake board leg writer"},
+    {"file": "cpimax_set.py",      "dest": "cpimax_set.py",      "role": "CPI-max card writer"},
+    {"file": "mk_artifact.py",     "dest": "mk_artifact.py",     "role": "index.html -> artifact.html (strips the doctype/head/body wrappers)"},
+    {"file": "t_all.js",           "dest": "t_all.js",           "role": "consolidated Playwright regression; run: timeout 110 node t_all.js"},
+    {"file": "patch_thu10.py",     "dest": "patch_thu10.py",     "role": "price-patch TEMPLATE (copy per run, edit result-file names + NOW/RSI/marks)"},
+    {"file": "mk_thu10am.py",      "dest": "mk_thu10am.py",      "role": "prompt builder TEMPLATE — full 10am scope"},
+    {"file": "mk_thu1pm.py",       "dest": "mk_thu1pm.py",       "role": "prompt builder TEMPLATE — incremental midday scope"}
+  ],
+  "config": [
+    {"file": "events_schedule.json", "dest": "events_schedule.json", "role": "static macro/corporate event schedule (rarely changes)"}
+  ],
+  "project_only_data": [
+    {"project": "claude/dashboard_data.json",  "dest": "dashboard_data_v3.json", "role": "per-run company/index/sector data (~1.4MB) — ALWAYS take the project copy, it is the newest"},
+    {"project": "claude/kalshi.json",          "dest": "kalshi.json",            "role": "per-run Kalshi state incl. history, archives, settled db"},
+    {"project": "claude/events_overlay.json",  "dest": "events_overlay.json",    "role": "per-run calendar actuals/notes overlay"}
+  ],
+  "project_only_extras": [
+    {"project": "claude/add_pm4.py",                 "role": "template: add a new stock_pm block + earnings-call mentions book"},
+    {"project": "claude/add_pm5.py",                 "role": "template: shared date-curve markets (quantum, US-stake board)"},
+    {"project": "claude/migrate_reports.py",         "role": "template: add a hosted Deep Research report (text_body + card entry)"},
+    {"project": "claude/report_chart_fixes_bundle.py", "role": "one-off report chart fixes"},
+    {"project": "claude/refresh-operations-notes.md",  "role": "the runbook — read the last section for the most recent run"},
+    {"project": "claude/prompt_<next-run>.txt",        "role": "the authoritative per-run instructions; the armed trigger names the file"}
+  ],
+  "notes": [
+    "Deep Research report bodies live in the repo under reports/ and are served by Vercel; refresh runs never touch them and restore.py does not fetch them.",
+    "The cloud container cannot reach ai-frontier-dashboard.vercel.app (egress proxy 403) but CAN reach raw.githubusercontent.com — that is why restore.py fetches from GitHub raw."
+  ]
+}

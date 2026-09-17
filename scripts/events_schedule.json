@@ -1,0 +1,583 @@
+{
+ "_note": "Official release schedules (source: federalreserve.gov, bls.gov, bea.gov, boj.or.jp, ecb.europa.eu, stat.go.jp, eurostat). Dates flagged est:true are inferred from the agency's usual cadence, not yet on an official calendar.",
+ "us": {
+  "fomc": {
+   "src": "Federal Reserve",
+   "time": "14:00 ET",
+   "imp": 3,
+   "dates": [
+    [
+     "2026-09-15",
+     "2026-09-16",
+     true
+    ],
+    [
+     "2026-10-27",
+     "2026-10-28",
+     false
+    ],
+    [
+     "2026-12-08",
+     "2026-12-09",
+     true
+    ],
+    [
+     "2027-01-26",
+     "2027-01-27",
+     false
+    ],
+    [
+     "2027-03-16",
+     "2027-03-17",
+     true
+    ]
+   ]
+  },
+  "fomc_minutes": {
+   "src": "Federal Reserve",
+   "time": "14:00 ET",
+   "imp": 1,
+   "dates": [
+    [
+     "2026-10-07",
+     "Sep 15–16 meeting",
+     true
+    ],
+    [
+     "2026-11-18",
+     "Oct 27–28 meeting",
+     true
+    ]
+   ]
+  },
+  "cpi": {
+   "src": "BLS",
+   "time": "08:30 ET",
+   "imp": 3,
+   "dates": [
+    [
+     "2026-08-12",
+     "Jul"
+    ],
+    [
+     "2026-09-11",
+     "Aug"
+    ],
+    [
+     "2026-10-14",
+     "Sep"
+    ],
+    [
+     "2026-11-10",
+     "Oct"
+    ],
+    [
+     "2026-12-10",
+     "Nov"
+    ]
+   ]
+  },
+  "ppi": {
+   "src": "BLS",
+   "time": "08:30 ET",
+   "imp": 2,
+   "dates": [
+    [
+     "2026-08-13",
+     "Jul"
+    ],
+    [
+     "2026-09-10",
+     "Aug"
+    ],
+    [
+     "2026-10-15",
+     "Sep"
+    ],
+    [
+     "2026-11-13",
+     "Oct"
+    ],
+    [
+     "2026-12-15",
+     "Nov"
+    ]
+   ]
+  },
+  "nfp": {
+   "src": "BLS",
+   "time": "08:30 ET",
+   "imp": 3,
+   "dates": [
+    [
+     "2026-09-04",
+     "Aug"
+    ],
+    [
+     "2026-10-02",
+     "Sep"
+    ],
+    [
+     "2026-11-06",
+     "Oct"
+    ],
+    [
+     "2026-12-04",
+     "Nov"
+    ]
+   ]
+  },
+  "jolts": {
+   "src": "BLS",
+   "time": "10:00 ET",
+   "imp": 1,
+   "dates": [
+    [
+     "2026-09-01",
+     "Jul"
+    ],
+    [
+     "2026-09-29",
+     "Aug"
+    ],
+    [
+     "2026-11-03",
+     "Sep"
+    ],
+    [
+     "2026-12-01",
+     "Oct"
+    ]
+   ]
+  },
+  "gdp": {
+   "src": "BEA",
+   "time": "08:30 ET",
+   "imp": 2,
+   "dates": [
+    [
+     "2026-09-30",
+     "Q2 third estimate"
+    ],
+    [
+     "2026-10-29",
+     "Q3 advance"
+    ],
+    [
+     "2026-11-25",
+     "Q3 second"
+    ],
+    [
+     "2026-12-23",
+     "Q3 third"
+    ]
+   ]
+  },
+  "pce": {
+   "src": "BEA",
+   "time": "08:30 ET",
+   "imp": 3,
+   "dates": [
+    [
+     "2026-09-30",
+     "Aug"
+    ],
+    [
+     "2026-10-29",
+     "Sep"
+    ],
+    [
+     "2026-11-25",
+     "Oct"
+    ],
+    [
+     "2026-12-23",
+     "Nov"
+    ]
+   ]
+  },
+  "retail": {
+   "src": "Census Bureau",
+   "time": "08:30 ET",
+   "imp": 2,
+   "est": true,
+   "dates": [
+    [
+     "2026-09-16",
+     "Aug"
+    ],
+    [
+     "2026-10-16",
+     "Sep"
+    ],
+    [
+     "2026-11-17",
+     "Oct"
+    ]
+   ]
+  },
+  "ism_mfg": {
+   "src": "ISM",
+   "time": "10:00 ET",
+   "imp": 1,
+   "est": true,
+   "dates": [
+    [
+     "2026-10-01",
+     "Sep"
+    ],
+    [
+     "2026-11-02",
+     "Oct"
+    ],
+    [
+     "2026-12-01",
+     "Nov"
+    ]
+   ]
+  },
+  "ism_svc": {
+   "src": "ISM",
+   "time": "10:00 ET",
+   "imp": 1,
+   "est": true,
+   "dates": [
+    [
+     "2026-10-05",
+     "Sep"
+    ],
+    [
+     "2026-11-04",
+     "Oct"
+    ],
+    [
+     "2026-12-03",
+     "Nov"
+    ]
+   ]
+  },
+  "empire": {
+   "src": "NY Fed",
+   "time": "08:30 ET",
+   "imp": 2,
+   "dates": [
+    [
+     "2026-09-15",
+     "Sep"
+    ],
+    [
+     "2026-10-15",
+     "Oct"
+    ],
+    [
+     "2026-11-16",
+     "Nov"
+    ],
+    [
+     "2026-12-15",
+     "Dec"
+    ]
+   ]
+  }
+ },
+ "jp": {
+  "boj": {
+   "src": "Bank of Japan",
+   "time": "~12:00 JST",
+   "imp": 3,
+   "dates": [
+    [
+     "2026-09-17",
+     "2026-09-18",
+     false
+    ],
+    [
+     "2026-10-29",
+     "2026-10-30",
+     true
+    ],
+    [
+     "2026-12-17",
+     "2026-12-18",
+     false
+    ]
+   ]
+  },
+  "boj_summary": {
+   "src": "Bank of Japan",
+   "time": "08:50 JST",
+   "imp": 1,
+   "dates": [
+    [
+     "2026-10-01",
+     "Summary of Opinions — Sep meeting"
+    ],
+    [
+     "2026-11-10",
+     "Summary of Opinions — Oct meeting"
+    ]
+   ]
+  },
+  "jp_cpi": {
+   "src": "Statistics Bureau of Japan",
+   "time": "08:30 JST",
+   "imp": 2,
+   "dates": [
+    [
+     "2026-09-17",
+     "Aug"
+    ],
+    [
+     "2026-10-23",
+     "Sep",
+     true
+    ],
+    [
+     "2026-11-20",
+     "Oct",
+     true
+    ]
+   ]
+  },
+  "tokyo_cpi": {
+   "src": "Statistics Bureau of Japan",
+   "time": "08:30 JST",
+   "imp": 1,
+   "est": true,
+   "dates": [
+    [
+     "2026-09-25",
+     "Sep"
+    ],
+    [
+     "2026-10-30",
+     "Oct"
+    ],
+    [
+     "2026-11-27",
+     "Nov"
+    ]
+   ]
+  },
+  "tankan": {
+   "src": "Bank of Japan",
+   "time": "08:50 JST",
+   "imp": 2,
+   "dates": [
+    [
+     "2026-10-01",
+     "Q3 Tankan"
+    ],
+    [
+     "2026-12-14",
+     "Q4 Tankan",
+     true
+    ]
+   ]
+  },
+  "jp_gdp": {
+   "src": "Cabinet Office",
+   "time": "08:50 JST",
+   "imp": 2,
+   "est": true,
+   "dates": [
+    [
+     "2026-09-08",
+     "Q2 second estimate"
+    ],
+    [
+     "2026-11-16",
+     "Q3 preliminary"
+    ]
+   ]
+  }
+ },
+ "eu": {
+  "ecb": {
+   "src": "European Central Bank",
+   "time": "14:15 CET (press conf 14:45)",
+   "imp": 3,
+   "dates": [
+    [
+     "2026-09-09",
+     "2026-09-10",
+     true
+    ],
+    [
+     "2026-10-28",
+     "2026-10-29",
+     false
+    ],
+    [
+     "2026-12-16",
+     "2026-12-17",
+     true
+    ]
+   ]
+  },
+  "ecb_accounts": {
+   "src": "European Central Bank",
+   "time": "13:30 CET",
+   "imp": 1,
+   "est": true,
+   "dates": [
+    [
+     "2026-10-08",
+     "Accounts of the Sep 9–10 meeting"
+    ],
+    [
+     "2026-11-26",
+     "Accounts of the Oct 28–29 meeting"
+    ]
+   ]
+  },
+  "hicp_flash": {
+   "src": "Eurostat",
+   "time": "11:00 CET",
+   "imp": 3,
+   "est": true,
+   "dates": [
+    [
+     "2026-09-01",
+     "Aug flash"
+    ],
+    [
+     "2026-10-01",
+     "Sep flash"
+    ],
+    [
+     "2026-10-30",
+     "Oct flash"
+    ],
+    [
+     "2026-12-01",
+     "Nov flash"
+    ]
+   ]
+  },
+  "hicp_final": {
+   "src": "Eurostat",
+   "time": "11:00 CET",
+   "imp": 1,
+   "est": true,
+   "dates": [
+    [
+     "2026-09-17",
+     "Aug final"
+    ],
+    [
+     "2026-10-16",
+     "Sep final"
+    ],
+    [
+     "2026-11-18",
+     "Oct final"
+    ]
+   ]
+  },
+  "eu_gdp": {
+   "src": "Eurostat",
+   "time": "11:00 CET",
+   "imp": 2,
+   "est": true,
+   "dates": [
+    [
+     "2026-09-07",
+     "Q2 revised"
+    ],
+    [
+     "2026-10-30",
+     "Q3 flash"
+    ],
+    [
+     "2026-11-13",
+     "Q3 second estimate"
+    ]
+   ]
+  },
+  "eu_pmi": {
+   "src": "HCOB / S&P Global",
+   "time": "10:00 CET",
+   "imp": 1,
+   "est": true,
+   "dates": [
+    [
+     "2026-09-23",
+     "Sep flash PMI"
+    ],
+    [
+     "2026-10-23",
+     "Oct flash PMI"
+    ],
+    [
+     "2026-11-23",
+     "Nov flash PMI"
+    ]
+   ]
+  }
+ },
+ "corp_extra": [
+  {
+   "date": "2026-09-08",
+   "time": "12:30 ET",
+   "tk": "IONQ",
+   "kind": "ir",
+   "title": "IonQ Investor Day 2026 (NYSE)",
+   "src": "investors.ionq.com",
+   "imp": 3,
+   "note": "De Masi, Singh, SkyWater CEO Sonderman presenting; Street expects a multiyear revenue framework and SkyWater integration detail."
+  },
+  {
+   "date": "2026-09-23",
+   "end": "2026-09-24",
+   "tk": "META",
+   "kind": "product",
+   "title": "Meta Connect 2026",
+   "src": "meta.com/connect",
+   "imp": 2,
+   "note": "Annual AI / glasses / Quest event.",
+   "time": ""
+  },
+  {
+   "date": "2026-11-30",
+   "end": "2026-12-03",
+   "tk": "NVDA",
+   "kind": "product",
+   "title": "NVIDIA GTC Washington, D.C.",
+   "src": "nvidia.com/gtc/dc",
+   "imp": 2,
+   "note": "Keynote + policy-facing AI infrastructure track.",
+   "time": ""
+  },
+  {
+   "date": "2026-10-01",
+   "tk": "TSLA",
+   "kind": "product",
+   "title": "Tesla next-generation Roadster unveil",
+   "src": "Tesla (X: \"Go for launch · 10.01\") · TechCrunch Sep 12",
+   "note": "Second-gen Roadster reveal; optional SpaceX cold-gas thrusters; production still 12–18 months out per TechCrunch. Time/location not yet announced.",
+   "imp": 3,
+   "time": ""
+  },
+  {
+   "date": "2026-10-25",
+   "tk": "ORCL",
+   "kind": "product",
+   "title": "Oracle AI World 2026 (Oct 25–28, Las Vegas)",
+   "src": "AMD events page (partner listing)",
+   "note": "Oracle's annual customer/partner conference (formerly CloudWorld) — OCI capacity, Stargate and sovereign-cloud updates typically land here; AMD is a listed partner.",
+   "imp": 3,
+   "time": ""
+  },
+  {
+   "date": "2026-10-12",
+   "tk": "NVDA",
+   "kind": "product",
+   "title": "OCP Global Summit 2026 (Oct 12–15, San Jose)",
+   "src": "Open Compute Project / AMD events page",
+   "note": "Data-center hardware standards summit — rack-scale, power and networking announcements from NVDA/AMD/hyperscalers; read-through for CRDO, MRVL, SMCI, BE, GEV.",
+   "imp": 2,
+   "time": ""
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+// t_all.js — consolidated page regression (recreated Sep 17 after the workspace was reclaimed)
+const {chromium}=require('playwright');
+(async()=>{
+ const b=await chromium.launch();const p=await b.newPage({viewport:{width:1400,height:900}});
+ const errs=[];p.on('pageerror',e=>errs.push(String(e).slice(0,200)));
+ await p.goto('file://'+process.cwd()+'/index.html');await p.waitForTimeout(800);
+ const r={};
+ r.cnt=await p.textContent('#cnt');
+ r.tabs=await p.$$eval('.tabbtn',x=>x.length);
+ r.tiles=await p.$$eval('.idx',x=>x.length); r.ktiles=await p.$$eval('.idx.hask',x=>x.length);
+ r.hdr=await p.$$eval('.idx',x=>x.slice(0,4).map(e=>e.innerText.replace(/\n/g,' | ')));
+ await p.evaluate(()=>setView('cards'));await p.waitForTimeout(300);
+ r.cards=await p.$$eval('#board .card',x=>x.length);
+ r.badges=await p.$$eval('#board .card .b.ktag',x=>x.length);
+ r.quantumBadges=await p.$$eval('#board .card',cs=>cs.filter(c=>/Useful QC|US stake/.test(c.innerText)).length);
+ await p.evaluate(()=>setView('table'));await p.waitForTimeout(300);
+ r.tables=await p.$$eval('#board .ltbl',x=>x.length); r.rows=await p.$$eval('#board tr.lr',x=>x.length);
+ r.rail=await p.$$eval('.ercard',x=>x.length);
+ await p.evaluate(()=>setCalRange('all'));await p.waitForTimeout(200);
+ r.calAll=await p.$$eval('.calev',x=>x.length); r.calAct=await p.$$eval('.calev .cp.rep',x=>x.length); r.kstrips=await p.$$eval('.kstrip',x=>x.length); r.kearn=await p.$$eval('.kearn',x=>x.length);
+ await p.evaluate(()=>setCalRange('week'));await p.waitForTimeout(200); r.calWeek=await p.$$eval('.calev',x=>x.length);
+ r.pmcards=await p.$$eval('#predict .pmcard',x=>x.length); r.pmrows=await p.$$eval('#predict tr.pmr',x=>x.length);
+ r.pmTitles=await p.$$eval('#predict .pmcard>.pt, #predict details.pmfold .pmt-tk',x=>x.map(e=>e.innerText.slice(0,40)));
+ r.fedMeetings=await p.$$eval('#predict .fm',x=>x.length);
+ r.settledChips=await p.$$eval('#settled .stsum .pmchip',x=>x.map(e=>e.innerText));
+ r.settledTiles=await p.$$eval('#settled details.stfold',x=>x.map(e=>e.querySelector('summary').innerText.replace(/\n/g,' | ')));
+ r.research=await p.$$eval('.rescard',x=>x.length);
+ // modal
+ await p.evaluate(()=>openM('ORCL'));await p.waitForTimeout(400);
+ r.modal=await p.textContent('#modal .t1'); r.modalCall=await p.$$eval('#modal .kcall',x=>x.length); r.modalPM=await p.$$eval('#modal .enpanel',x=>x.length);
+ await p.evaluate(()=>closeM());
+ await p.evaluate(()=>assetModal('SPX'));await p.waitForTimeout(300); r.assetModal=(await p.textContent('#modal .t1')).slice(0,40); await p.evaluate(()=>closeM());
+ await p.evaluate(()=>togglePM('NVDA'));await p.waitForTimeout(300); r.nvdaPanels=await p.$$eval('#pmx-NVDA .enpanel',x=>x.length);
+ await p.evaluate(()=>toggleTheme());await p.waitForTimeout(200); r.theme=await p.evaluate(()=>document.documentElement.getAttribute('data-theme')); await p.evaluate(()=>toggleTheme());
+ await p.setViewportSize({width:420,height:800});await p.waitForTimeout(300); r.mobileScroll=await p.evaluate(()=>[document.body.scrollWidth,window.innerWidth]);
+ r.errors=errs;
+ console.log(JSON.stringify(r,null,1));
+ await b.close();
+})();

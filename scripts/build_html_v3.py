@@ -276,7 +276,7 @@ footer{margin-top:34px;border-top:1px solid var(--bd);padding-top:16px;color:var
 .kband .km{position:absolute;top:-4px;width:3px;height:22px;background:#fff;border-radius:2px}.kband .ks{position:absolute;top:-4px;width:3px;height:22px;background:var(--cyan);border-radius:2px}
 .kax{display:flex;justify-content:space-between;font-size:10px;color:var(--mut2);font-variant-numeric:tabular-nums}
 .engrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:8px}.enpanel{background:var(--panel2);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;min-width:0}.enpanel .hbar{grid-template-columns:78px 1fr 40px}
-body.searching #calendar,body.searching #predict,body.searching #research{display:none}
+body.searching #calendar,body.searching #predict,body.searching #research,body.searching #compute{display:none}
 .idx.ghost{border-style:dashed;opacity:.75}
 .idx.ghost .vl{color:var(--mut);font-size:12px}
 /* ---- top tabs ---- */
@@ -358,6 +358,31 @@ body.searching #calendar,body.searching #predict,body.searching #research{displa
 .kb.on i{background:linear-gradient(180deg,#f0abfc,#a855f7)}.kb.on span{color:#e9d5ff}
 #predict{margin:6px 0 14px;scroll-margin-top:64px}
 #settled{margin:6px 0 14px;scroll-margin-top:64px}
+/* ---- compute market (Ornn) ---- */
+#compute{margin:6px 0 14px;scroll-margin-top:64px}
+.cmphd{display:flex;align-items:baseline;gap:10px;margin:14px 0 8px;flex-wrap:wrap}.cmphd h2{font-size:15px;margin:0;color:var(--tx)}.cmphd .bl{font-size:11px;color:var(--mut)}
+.cmpsub{font-size:12px;font-weight:700;color:var(--tx);margin:14px 0 8px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.cmpsub span{font-size:10.5px;font-weight:400;color:var(--mut2)}
+.cmptiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:8px}
+.cmpt{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:9px 11px;min-width:0;border-top:3px solid var(--c)}
+.cmpt .nm{font-size:11px;color:var(--mut);display:flex;justify-content:space-between;gap:6px}.cmpt .nm b{color:var(--tx);font-size:12px}
+.cmpt .vl{font-size:18px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums}.cmpt .vl small{font-size:10px;color:var(--mut2);font-weight:600;margin-left:3px}
+.cmpt .chg{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:5px;font-size:10.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.cmpt .chg i{display:block;font-style:normal;font-size:8.5px;color:var(--mut2);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.cmpt svg{display:block;width:100%;height:26px;margin-top:6px}
+.cmpt .kx{margin-top:6px;padding-top:5px;border-top:1px dashed var(--bd);font-size:10.5px;color:var(--mut);line-height:1.45}.cmpt .kx b{color:var(--tx)}.cmpt .kx .kl{font-size:8.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#c4b5fd;margin-right:4px}
+:root[data-theme=light] .cmpt .kx .kl{color:#5a2fc0}
+.cmpcard{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-top:10px;min-width:0}
+.cmpbar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}.cmpbar .lbl{font-size:10px;color:var(--mut2);text-transform:uppercase;letter-spacing:.5px;margin-right:2px}.cmpbar .sep{width:1px;height:16px;background:var(--bd);margin:0 4px}
+.cmpwrap{position:relative}.cmpwrap svg{width:100%;height:auto;display:block}
+.cmptip{position:absolute;top:6px;pointer-events:none;background:var(--panel3);border:1px solid var(--bd2);border-radius:8px;padding:6px 9px;font-size:11px;color:var(--tx);white-space:nowrap;display:none;z-index:3;box-shadow:0 4px 14px rgba(0,0,0,.35);font-variant-numeric:tabular-nums}
+.cmptip .d{color:var(--mut);font-size:10px;margin-bottom:3px}.cmptip i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
+.cmpleg{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--mut);margin-top:6px}.cmpleg span{cursor:pointer;user-select:none}.cmpleg span.off{opacity:.35;text-decoration:line-through}.cmpleg i{display:inline-block;width:10px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
+.cmptbl{min-width:820px}.cmptbl td.tkc .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+.cmptbl td.kxc{white-space:normal;text-align:left;font-size:10.5px;color:var(--mut);min-width:170px;line-height:1.4}.cmptbl td.kxc b{color:var(--tx)}.cmptbl td.kxc .am{color:var(--amb)}
+.cmptbl td.rng{font-size:11px;color:var(--mut)}
+.cmptbl tr.lx .xrow{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;padding-top:6px}.cmptbl tr.lx .cmpt{width:300px;flex:none}.cmptbl tr.lx .cmpcard{flex:1;min-width:280px;margin-top:0}
+.cmpnote{font-size:10.5px;color:var(--mut2);line-height:1.55;margin-top:8px}.cmpnote b{color:var(--mut)}
+
 .sthd{display:flex;align-items:baseline;gap:10px;margin:14px 0 8px;flex-wrap:wrap}.sthd h2{font-size:15px;margin:0;color:var(--tx)}.sthd .bl{font-size:11px;color:var(--mut)}
 .stsum{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
 .stsum .pmchip b{font-size:13px}
@@ -482,6 +507,7 @@ details.pmfold>summary:hover{background:rgba(168,85,247,.04)}details.pmfold[open
  <button class="tabbtn" onclick="goTab(this,'board')">🗂 My List</button>
  <button class="tabbtn" onclick="goTab(this,'earnrail')">📰 Earnings Reports</button>
  <button class="tabbtn" onclick="goTab(this,'calendar')">📅 Calendar</button>
+ <button class="tabbtn" onclick="goTab(this,'compute')">🖥 Compute</button>
  <button class="tabbtn" onclick="goTab(this,'predict')">🎯 Prediction Markets</button>
  <button class="tabbtn" onclick="goTab(this,'settled')">✅ Settled Markets</button>
  <button class="tabbtn" onclick="goTab(this,'research')">🔬 Deep Research</button>
@@ -503,12 +529,13 @@ details.pmfold>summary:hover{background:rgba(168,85,247,.04)}details.pmfold[open
 <div id="board"></div>
 <div id="browse"></div>
 <div id="calendar"></div>
+<div id="compute"></div>
 <div id="predict"></div>
 <div id="settled"></div>
 <div id="research"></div>
 </div><aside id="earnrail"></aside></div>
 <footer>
- <div><b>Data sources:</b> Prices, technicals, analyst ratings &amp; fundamentals — Stocklake. VIX/breadth/fear-greed — Stocklake. Brent, Gold, Silver, BTC, ETH, 10Y Treasury — Alpha Vantage. Retail sentiment &amp; messages — Stocktwits. Insider (Form 4), net buy/sell &amp; float — Massive/SEC. Institutional % &amp; top holders — Alpha Vantage (13F). Earnings digests — Bigdata.com. Charts — Massive (~2yr daily, all names) + Alpha Vantage (monthly long-history for NVDA/MSFT/AMZN). Index levels via liquid ETF proxies where noted.</div>
+ <div><b>Data sources:</b> Prices, technicals, analyst ratings &amp; fundamentals — Stocklake. VIX/breadth/fear-greed — Stocklake. Brent, Gold, Silver, BTC, ETH, 10Y Treasury — Alpha Vantage. Retail sentiment &amp; messages — Stocktwits. Insider (Form 4), net buy/sell &amp; float — Massive/SEC. Institutional % &amp; top holders — Alpha Vantage (13F). Earnings digests — Bigdata.com. Compute prices (GPU rental $/GPU-hr and model-API $/M tokens) — Ornn OCPI / OTPI. Charts — Massive (~2yr daily, all names) + Alpha Vantage (monthly long-history for NVDA/MSFT/AMZN). Index levels via liquid ETF proxies where noted.</div>
  <div class="mscibox" id="mscibox"></div>
  <div style="margin-top:8px"><b>Snapshot:</b> <span id="asof2"></span>. 1D shows the latest session (intraday not entitled). 3Y/5Y/MAX show full history where monthly data exists, otherwise the ~2-year window (see chart date axis). Insider buy/sell covers open-market transactions since Feb 2026. Prices delayed; auto-refreshes on schedule. Opportunities/threats are qualitative, not recommendations.</div>
  <div class="disc">For informational purposes only. Not investment advice. Verify all figures against primary sources before acting.</div>
@@ -1319,6 +1346,97 @@ function renderSettled(){
  el.innerHTML=hd+sum+body+`<div class="calmeta">Records are written by the refresh pipeline the moment a market settles (macro ladders with a settlement note, ERCOT daily peaks, Hormuz weekly books, company KPI markets and earnings-call books, US-stake legs). "Called it" = the mode bucket matched the print (ladders), the tracked strike's last read was on the right side of 50% (binary books), or the share of call topics priced correctly. Pending rows are contracts whose period ended but Kalshi has not finalized yet.</div>`;
 }
 
+
+// ---- compute market (Ornn OCPI / OTPI) ----
+const CMP=DATA.compute||null;
+const CMPCOL={'B200':'#a78bfa','H200':'#38bdf8','H100 SXM':'#2fbf71','A100 SXM4':'#f5a623','RTX 5090':'#f2555a','anthropic':'#e8825f','openai':'#14b8a6','google':'#60a5fa','deepseek':'#c084fc'};
+const LABNM={anthropic:'Anthropic',openai:'OpenAI',google:'Google',deepseek:'DeepSeek',minimax:'MiniMax',xiaomi:'Xiaomi',qwen:'Qwen','moonshotai':'Moonshot','z-ai':'Z.ai',mistralai:'Mistral','meta-llama':'Meta Llama'};
+let CMPST={g:{mode:'usd',rng:0,off:[]},l:{mode:'usd',rng:0,smooth:true,off:[]}};
+try{const s=JSON.parse(localStorage.getItem('aiF_cmp')||'null');if(s&&s.g&&s.l)CMPST=s;}catch(e){}
+function cmpSave(){try{localStorage.setItem('aiF_cmp',JSON.stringify(CMPST));}catch(e){}}
+const cmpT=s=>new Date(s+'T00:00:00Z').getTime();
+function cmpChg(h,days){if(!h||h.length<2)return null;const L=h[h.length-1];let b=null;
+ if(days==='all')b=h[0][1];else{const t=cmpT(L[0])-days*864e5;for(let i=h.length-1;i>=0;i--){if(cmpT(h[i][0])<=t){b=h[i][1];break;}}}
+ return b?(L[1]/b-1)*100:null;}
+function cmpUsd(v,lab){if(v==null)return '—';return '$'+(lab&&v<0.1?v.toFixed(3):v.toFixed(2));}
+function cmpPct(p){if(p==null)return '<span class="flat">—</span>';const c=p>0.05?'up':p<-0.05?'down':'flat';return `<span class="${c}">${p>0?'+':''}${Math.abs(p)>=100?p.toFixed(0):p.toFixed(1)}%</span>`;}
+function cmpSmooth(h,w){return h.map((p,i)=>{const s=h.slice(Math.max(0,i-w+1),i+1);return [p[0],s.reduce((a,x)=>a+x[1],0)/s.length];});}
+function cmpSpark(h,col){if(!h||h.length<2)return '';const v=h.map(p=>p[1]),mn=Math.min(...v),mx=Math.max(...v),r=(mx-mn)||1;
+ const pts=v.map((y,i)=>`${(i/(v.length-1)*100).toFixed(2)},${(24-(y-mn)/r*22).toFixed(2)}`).join(' ');
+ return `<svg viewBox="0 0 100 26" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${col}" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>`;}
+function cmpKalshi(gpu,spot){const key=CMP&&CMP.kalshi_link&&CMP.kalshi_link[gpu];const N=DATA.kalshi&&DATA.kalshi.stock_pm&&DATA.kalshi.stock_pm.NVDA;
+ if(!key||!N)return '';const m=(N.markets||[]).find(x=>x.key===key);if(!m||!m.ladder||!m.ladder.length)return '';
+ const nxt=m.ladder.find(x=>x[0]>spot),below=m.ladder.filter(x=>x[0]<=spot).map(x=>'$'+x[0].toFixed(2));
+ const med=m.p50?`${m.p50[1]||''}$${(+m.p50[0]).toFixed(2)}`:'';
+ return `<div class="kx"><span class="kl">Kalshi</span>2026 peak median <b>${med}</b>${nxt?` · &gt;$${nxt[0].toFixed(2)} <b>${Math.round(nxt[1]*100)}%</b>`:''}${below.length?`<br><span style="color:var(--amb)">spot is already above ${below.join(', ')}</span>`:''}</div>`;}
+function cmpTile(name,h,kind){const col=CMPCOL[name]||'#94a3b8',L=h[h.length-1],lab=kind==='lab';
+ const sp=lab?cmpSmooth(h,7):h;
+ return `<div class="cmpt" style="--c:${col}"><div class="nm"><b>${lab?(LABNM[name]||name):name}</b><span>${L[0].slice(5)}</span></div>
+ <div class="vl">${cmpUsd(L[1],lab)}<small>${lab?'/M tok':'/GPU-hr'}</small></div>
+ <div class="chg"><span><i>1d</i>${cmpPct(cmpChg(h,1))}</span><span><i>7d</i>${cmpPct(cmpChg(h,7))}</span><span><i>30d</i>${cmpPct(cmpChg(h,30))}</span>${(cmpT(L[0])-cmpT(h[0][0]))/864e5>35?`<span><i>${Math.round((cmpT(L[0])-cmpT(h[0][0]))/864e5)}d</i>${cmpPct(cmpChg(h,'all'))}</span>`:''}</div>
+ ${cmpSpark(sp,col)}${lab?'':cmpKalshi(name,L[1])}</div>`;}
+const CMPDATA={};const CMPOPEN=new Set();
+function cmpId(k,n){return k+'-'+n.replace(/[^A-Za-z0-9]/g,'_');}
+function toggleCMP(id){if(CMPOPEN.has(id))CMPOPEN.delete(id);else CMPOPEN.add(id);renderCompute();const r=document.getElementById('cr-'+id);if(r&&CMPOPEN.has(id))r.scrollIntoView({behavior:'smooth',block:'nearest'});}
+function cmpKxCell(gpu,spot){const key=CMP&&CMP.kalshi_link&&CMP.kalshi_link[gpu];const N=DATA.kalshi&&DATA.kalshi.stock_pm&&DATA.kalshi.stock_pm.NVDA;
+ if(!key||!N)return '<span style="color:var(--mut2)">—</span>';const m=(N.markets||[]).find(x=>x.key===key);if(!m||!m.ladder||!m.ladder.length)return '<span style="color:var(--mut2)">—</span>';
+ const nxt=m.ladder.find(x=>x[0]>spot),below=m.ladder.filter(x=>x[0]<=spot).length;
+ return `2026 peak median <b>${m.p50?(m.p50[1]||'')+'$'+(+m.p50[0]).toFixed(2):'—'}</b>${nxt?` · &gt;$${nxt[0].toFixed(2)} <b>${Math.round(nxt[1]*100)}%</b>`:''}${below?`<br><span class="am">spot above ${below} open strike${below>1?'s':''}</span>`:''}`;}
+function cmpTable(k,series,kind){const lab=kind==='lab';const h0=series.length?series[0].hist[0][0]:'';
+ const head=`<tr><th>${lab?'Lab':'GPU'}</th><th class="c">Trend</th><th>${lab?'$ / M tokens':'$ / GPU-hr'}</th><th>1D</th><th>7D</th><th>30D</th>${lab?'':`<th>Since ${h0.slice(5)}</th>`}<th>Range (low – high)</th>${lab?'':'<th style="text-align:left">Kalshi (settles on this index)</th>'}<th class="c stk">Card</th></tr>`;
+ const rows=series.map(s=>{const h=s.hist,L=h[h.length-1],id=cmpId(k,s.name),open=CMPOPEN.has(id),v=h.map(p=>p[1]),mn=Math.min(...v),mx=Math.max(...v);
+  const sp=lab?cmpSmooth(h,7):h;
+  let r=`<tr class="lr${open?' open':''}" id="cr-${id}" onclick="toggleCMP('${id}')"><td class="tkc"><span class="dot" style="background:${s.col}"></span>${s.label}<small>${lab?'OTPI blend · '+L[0]:'OCPI daily settle · '+L[0]}</small></td>
+  <td class="spc">${cmpSpark(sp,s.col).replace('<svg ','<svg class="spark" ')}</td><td class="pxc">${cmpUsd(L[1],lab)}</td><td class="chc">${cmpPct(cmpChg(h,1))}</td><td class="chc">${cmpPct(cmpChg(h,7))}</td><td class="chc">${cmpPct(cmpChg(h,30))}</td>${lab?'':`<td class="chc">${cmpPct(cmpChg(h,'all'))}</td>`}
+  <td class="rng">${cmpUsd(mn,lab)} – ${cmpUsd(mx,lab)}</td>${lab?'':`<td class="kxc">${cmpKxCell(s.name,L[1])}</td>`}<td class="c stk"><button class="seebtn" onclick="event.stopPropagation();toggleCMP('${id}')">${open?'Hide card':'See card'}</button></td></tr>`;
+  if(open){const st={mode:'usd',rng:0,off:[],smooth:lab};const ncol=lab?8:10;
+   r+=`<tr class="lx"><td colspan="${ncol}"><div class="xrow">${cmpTile(s.name,h,kind)}<div class="cmpcard"><div class="cmpsub" style="margin:0 0 6px">${s.label} — full history<span>${lab?'7-day average · log scale':'$ per GPU-hour'} · hover for values</span></div>${cmpChart('one-'+id,[s],st,kind)}</div></div></td></tr>`;}
+  return r;}).join('');
+ return `<div class="ltwrap"><table class="ltbl cmptbl"><thead>${head}</thead><tbody>${rows}</tbody></table></div>`;}
+function cmpChart(id,series,st,kind){
+ const W=760,H=270,pl=50,pr=14,pt=10,pb=24,lab=kind==='lab';
+ const lastT=Math.max(...series.map(s=>cmpT(s.hist[s.hist.length-1][0])));const cut=st.rng?lastT-st.rng*864e5:-Infinity;
+ let S=series.filter(s=>!(st.off||[]).includes(s.name)).map(s=>{let h=s.hist.filter(p=>cmpT(p[0])>=cut);if(lab&&st.smooth)h=cmpSmooth(h,7);
+  if(st.mode==='idx'&&h.length){const b=h[0][1];h=h.map(p=>[p[0],p[1]/b*100]);}return {...s,h};}).filter(s=>s.h.length>1);
+ if(!S.length)return `<div class="calempty">All series hidden — click a legend entry to show it.</div>`;
+ const log=lab&&st.mode==='usd';const f=v=>log?Math.log10(v):v;
+ const xs=[].concat(...S.map(s=>s.h.map(p=>cmpT(p[0])))),x0=Math.min(...xs),x1=Math.max(...xs);
+ const ys=[].concat(...S.map(s=>s.h.map(p=>f(p[1])))),ymn=Math.min(...ys),ymx=Math.max(...ys),pad=(ymx-ymn)*.08||.1,y0=(st.mode==='usd'&&!log)?Math.max(0,ymn-pad):ymn-pad,y1=ymx+pad;
+ const X=t=>pl+(t-x0)/((x1-x0)||1)*(W-pl-pr),Y=v=>pt+(1-(f(v)-y0)/(y1-y0))*(H-pt-pb);
+ let g='';const nt=4;
+ for(let i=0;i<=nt;i++){const fv=y0+(y1-y0)*i/nt,v=log?Math.pow(10,fv):fv,yy=pt+(1-i/nt)*(H-pt-pb);
+  const lb=st.mode==='idx'?v.toFixed(0):(v<0.1?'$'+v.toFixed(3):v<10?'$'+v.toFixed(2):'$'+v.toFixed(1));
+  g+=`<line x1="${pl}" x2="${W-pr}" y1="${yy}" y2="${yy}" stroke="var(--bd)" stroke-width="1"/><text x="${pl-6}" y="${yy+3.5}" text-anchor="end" font-size="10" fill="var(--mut2)">${lb}</text>`;}
+ if(st.mode==='idx'&&100>=Math.pow(10,0)&&(y0<100&&y1>100))g+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(100)}" y2="${Y(100)}" stroke="var(--mut2)" stroke-dasharray="3 3" stroke-width="1"/>`;
+ const nx=Math.min(6,Math.round((x1-x0)/864e5/7)||2);for(let i=0;i<=nx;i++){const t=x0+(x1-x0)*i/nx,dd=new Date(t).toISOString().slice(5,10);g+=`<text x="${X(t)}" y="${H-6}" text-anchor="middle" font-size="10" fill="var(--mut2)">${dd}</text>`;}
+ const paths=S.map(s=>`<polyline points="${s.h.map(p=>X(cmpT(p[0])).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ')}" fill="none" stroke="${s.col}" stroke-width="2" stroke-linejoin="round"/>`).join('');
+ CMPDATA[id]={S,X,Y,W,x0,x1,pl,pr,mode:st.mode,lab};
+ return `<div class="cmpwrap" onmousemove="cmpHover(event,'${id}')" onmouseleave="cmpHide('${id}')"><svg id="svg-${id}" viewBox="0 0 ${W} ${H}">${g}${paths}<line id="hl-${id}" x1="0" x2="0" y1="${pt}" y2="${H-pb}" stroke="var(--mut)" stroke-width="1" style="display:none"/></svg><div class="cmptip" id="tip-${id}"></div></div>`;}
+function cmpHover(e,id){const D=CMPDATA[id];if(!D)return;const svg=document.getElementById('svg-'+id),r=svg.getBoundingClientRect(),sx=(e.clientX-r.left)/r.width*D.W;
+ const t=D.x0+(sx-D.pl)/((D.W-D.pl-D.pr))*(D.x1-D.x0);let best=null;D.S.forEach(s=>s.h.forEach(p=>{const dt=Math.abs(cmpT(p[0])-t);if(!best||dt<best.dt)best={dt,d:p[0]};}));if(!best)return;
+ const rows=D.S.map(s=>{const p=s.h.find(q=>q[0]===best.d);return p?{s,v:p[1]}:null;}).filter(Boolean).sort((a,b)=>b.v-a.v);
+ const fmt=v=>D.mode==='idx'?v.toFixed(1):cmpUsd(v,D.lab);
+ const tip=document.getElementById('tip-'+id),hl=document.getElementById('hl-'+id);hl.setAttribute('x1',D.X(cmpT(best.d)));hl.setAttribute('x2',D.X(cmpT(best.d)));hl.style.display='';
+ tip.innerHTML=`<div class="d">${best.d}${D.lab&&CMPST.l.smooth?' · 7-day avg':''}</div>`+rows.map(x=>`<div><i style="background:${x.s.col}"></i>${x.s.label} <b>${fmt(x.v)}</b></div>`).join('');tip.style.display='block';
+ const px=(D.X(cmpT(best.d))/D.W)*r.width,tw=tip.offsetWidth;tip.style.left=Math.max(4,Math.min(r.width-tw-4,px+12>r.width-tw-4?px-tw-12:px+12))+'px';}
+function cmpHide(id){const t=document.getElementById('tip-'+id),h=document.getElementById('hl-'+id);if(t)t.style.display='none';if(h)h.style.display='none';}
+function cmpSet(k,f,v){if(f==='off'){const o=CMPST[k].off||(CMPST[k].off=[]);const i=o.indexOf(v);if(i>=0)o.splice(i,1);else o.push(v);}else CMPST[k][f]=v;cmpSave();renderCompute();}
+function cmpBar(k,st,lab){const b=(f,v,t)=>`<button class="cf${st[f]===v?' on':''}" onclick="cmpSet('${k}','${f}',${JSON.stringify(v).replace(/"/g,"'")})">${t}</button>`;
+ return `<div class="cmpbar"><span class="lbl">View</span>${b('mode','usd',lab?'$ / M tokens (log)':'$ / GPU-hr')}${b('mode','idx','Indexed (start = 100)')}<span class="sep"></span><span class="lbl">Range</span>${b('rng',30,'30D')}${b('rng',60,'60D')}${b('rng',0,'All')}${lab?`<span class="sep"></span>${b('smooth',true,'7-day avg')}${b('smooth',false,'Daily')}`:''}</div>`;}
+function cmpLeg(k,series){const off=CMPST[k].off||[];return `<div class="cmpleg">${series.map(s=>`<span class="${off.includes(s.name)?'off':''}" onclick="cmpSet('${k}','off','${s.name}')"><i style="background:${s.col}"></i>${s.label}</span>`).join('')}<span style="cursor:default;color:var(--mut2)">· click to hide / show</span></div>`;}
+function renderCompute(){
+ const el=document.getElementById('compute');if(!el)return;
+ const hd=`<div class="cmphd"><h2>🖥 Compute Market</h2><span class="bl">what AI compute actually costs — GPU rental rates (Ornn Compute Price Index, $ per GPU-hour, daily settle) and model-API prices by lab (Ornn Token Price Index, $ per million tokens)</span></div>`;
+ if(!CMP||!CMP.gpus){el.innerHTML=hd+`<div class="calempty">No compute data yet.</div>`;return;}
+ const gs=(CMP.gpu_order||Object.keys(CMP.gpus)).filter(n=>CMP.gpus[n]&&CMP.gpus[n].hist&&CMP.gpus[n].hist.length).map(n=>({name:n,label:n,col:CMPCOL[n]||'#94a3b8',hist:CMP.gpus[n].hist}));
+ const ls=(CMP.lab_order||Object.keys(CMP.labs||{})).filter(n=>CMP.labs[n]&&CMP.labs[n].hist&&CMP.labs[n].hist.length).map(n=>({name:n,label:LABNM[n]||n,col:CMPCOL[n]||'#94a3b8',hist:CMP.labs[n].hist}));
+ const gT=`<div class="cmpsub">GPU rental — $ per GPU-hour<span>daily settle · ${CMP.last_gpu_day||''} · history since ${gs.length?gs[0].hist[0][0]:''}</span></div>${cmpTable('g',gs,'gpu')}`;
+ const gC=`<div class="cmpcard">${cmpBar('g',CMPST.g,false)}${cmpChart('g',gs,CMPST.g,'gpu')}${cmpLeg('g',gs)}</div>`;
+ const lT=ls.length?`<div class="cmpsub">Model API prices by lab — $ per million tokens<span>volume-weighted blend across each lab's models · ${CMP.last_lab_day||''} · history since ${ls[0].hist[0][0]}</span></div>${cmpTable('l',ls,'lab')}`:'';
+ const lC=ls.length?`<div class="cmpcard">${cmpBar('l',CMPST.l,true)}${cmpChart('l',ls,CMPST.l,'lab')}${cmpLeg('l',ls)}</div>`:'';
+ const lk=CMP.locked||{};const note=`<div class="cmpnote"><b>How to read it.</b> GPU lines are the market hourly rental rate for one GPU (the index Kalshi's B200 / H200 / RTX 5090 year-end markets settle on — see the Kalshi column in the GPU table and the NVDA card in Prediction Markets). Lab lines are a usage-weighted blend of each lab's API prices, so they move when the model mix shifts as well as when list prices change — OpenAI's in particular is noisy day to day, hence the 7-day-average default. The history is stored with the dashboard and grows every day, beyond the 3-month window the free Ornn feed returns. <b>Not on the free tier:</b> ${(lk.gpus||[]).join(', ')}${(lk.labs||[]).length?'; labs '+lk.labs.map(x=>LABNM[x]||x).join(', '):''}. Source: Ornn · updated ${(CMP.asof||'').replace('T',' ')}.</div>`;
+ el.innerHTML=hd+gT+gC+lT+lC+note;}
+
 // ---- deep research ----
 const DR=(DATA.deep_research||[]);
 function renderResearch(){
@@ -1377,7 +1495,7 @@ function goTab(btn,id){
  const t=document.getElementById(id);
  if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
 }
-renderPending();render();renderEarnRail();renderCalendar();renderPredict();renderSettled();renderResearch();renderStripGhosts();
+renderPending();render();renderEarnRail();renderCalendar();renderCompute();renderPredict();renderSettled();renderResearch();renderStripGhosts();
 </script></body></html>'''
 html=html.replace('__PAYLOAD__',payload)
 open('index.html','w').write(html)

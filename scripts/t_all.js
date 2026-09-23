@@ -25,6 +25,11 @@ const {chromium}=require('playwright');
  r.settledChips=await p.$$eval('#settled .stsum .pmchip',x=>x.map(e=>e.innerText));
  r.settledTiles=await p.$$eval('#settled details.stfold',x=>x.map(e=>e.querySelector('summary').innerText.replace(/\n/g,' | ')));
  r.research=await p.$$eval('.rescard',x=>x.length);
+ r.cmpRows=await p.$$eval('#compute tr.lr',x=>x.length); r.cmpCharts=await p.$$eval('#compute .cmpwrap svg polyline',x=>x.length);
+ r.cmpKalshi=await p.$$eval('#compute td.kxc',x=>x.map(e=>e.innerText.replace(/\n/g,' ')));
+ await p.evaluate(()=>toggleCMP('g-B200'));await p.waitForTimeout(150); r.cmpCard=await p.$$eval('#compute tr.lx .cmpt',x=>x.length); r.cmpCardChart=await p.$$eval('#compute tr.lx .cmpwrap polyline',x=>x.length); await p.evaluate(()=>toggleCMP('g-B200'));
+ await p.evaluate(()=>cmpSet('g','mode','idx'));await p.waitForTimeout(150); r.cmpIdx=await p.$$eval('#compute .cmpwrap',x=>x.length); await p.evaluate(()=>cmpSet('g','mode','usd'));
+ const bx=await p.$('#compute .cmpwrap');if(bx){const bb=await bx.boundingBox();await p.mouse.move(bb.x+bb.width*0.6,bb.y+60);await p.waitForTimeout(100);r.cmpTip=(await p.textContent('#tip-g')).slice(0,80);}
  // modal
  await p.evaluate(()=>openM('ORCL'));await p.waitForTimeout(400);
  r.modal=await p.textContent('#modal .t1'); r.modalCall=await p.$$eval('#modal .kcall',x=>x.length); r.modalPM=await p.$$eval('#modal .enpanel',x=>x.length);

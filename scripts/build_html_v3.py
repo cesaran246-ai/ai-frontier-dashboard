@@ -647,7 +647,7 @@ document.getElementById('cnt').textContent=DATA.sectors.flatMap(s=>s.tickers).le
 document.getElementById('asof').innerHTML='as of '+DATA.as_of+' &nbsp;·&nbsp; <b style="color:#4ea1ff">⟳ Last refreshed: '+(DATA.generated||'').replace(/\s*\(.*\)/,'')+'</b>';
 document.getElementById('asof2').textContent=DATA.generated;
 document.getElementById('mscibox').textContent='MSCI: '+DATA.msci_note;
-function idxVal(i){if(i.unit==='pct')return i.value.toFixed(2)+'%';if(['$','$/oz','$/bbl'].includes(i.unit))return '$'+i.value.toLocaleString();return i.value.toLocaleString();}
+function idxVal(i){if(i.unit==='fx')return i.value.toFixed(i.dp==null?4:i.dp);if(i.unit==='pct')return i.value.toFixed(2)+'%';if(['$','$/oz','$/bbl'].includes(i.unit))return '$'+i.value.toLocaleString();return i.value.toLocaleString();}
 document.getElementById('strip').innerHTML=DATA.indices.map(i=>{const c=i.chg;const KA=(DATA.kalshi&&DATA.kalshi.assets)||{};const hasK=!!KA[i.key];return `<div class="idx${hasK?' hask':''}" title="${hasK?'Click for Kalshi-implied price range':i.note}"${hasK?` onclick="assetModal('${i.key}')"`:''}><div class="nm"><span>${i.name}</span>${hasK?'<span class="tag ktag">Kalshi ▸</span>':(i.proxy&&i.proxy!==i.key?`<span class="tag">${i.proxy}</span>`:'')}</div><div class="vl">${idxVal(i)}</div><div class="ch ${cls(c)}">${c==null?'<span class="flat" style="font-size:10px">'+(i.anchor?'est. · anchored '+(i.anchor_date||'').slice(5).replace('-','/'):i.note)+'</span>':pct(c)}</div>${i.rsi?`<div class="rsi">RSI ${i.rsi}</div>`:''}</div>`;}).join('');
 
 // ---- mini sparkline on cards (last ~60 daily pts) ----

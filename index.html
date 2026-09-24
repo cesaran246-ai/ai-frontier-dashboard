@@ -247,6 +247,23 @@ footer{margin-top:34px;border-top:1px solid var(--bd);padding-top:16px;color:var
 .layout.noer #earnrail .railtab,.layout.nonw #newsrail .railtab{display:flex}
 @media(max-width:1279px){.layout,.layout.noer,.layout.nonw,.layout.noer.nonw{grid-template-columns:minmax(0,1fr);grid-template-areas:"main" "er" "nw"}
  .rail{position:static;max-height:none;overflow:visible}.railtab{writing-mode:horizontal-tb;width:auto;min-height:0;padding:9px 14px;justify-content:flex-start}}
+/* sector heatmaps (My List) */
+.hbtn{font:600 11px/1.3 inherit;font-family:inherit;background:var(--card);border:1px solid var(--bd);color:var(--mut);border-radius:99px;padding:3px 10px;cursor:pointer;margin-left:auto;white-space:nowrap}
+.hbtn:hover{color:var(--tx);border-color:var(--cyan)}.hbtn.on{color:var(--cyan);border-color:rgba(63,189,241,.5);background:rgba(63,189,241,.08)}
+.heatwrap{margin:0 0 12px}
+.heat{position:relative;width:100%;border-radius:10px;overflow:hidden;background:var(--bg)}
+.ht{position:absolute;border-radius:4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;line-height:1.15;transition:filter .12s}
+.ht:hover{filter:brightness(1.15);outline:2px solid var(--tx);outline-offset:-2px;z-index:2}
+.ht b{font-size:13px;font-weight:800;letter-spacing:.3px}.ht span{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;opacity:.95}
+.ht.sm b{font-size:10.5px}.ht.sm span{font-size:9.5px}.ht.xs b{font-size:9px}.ht.xs span{display:none}
+.heatleg{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:10.5px;color:var(--mut2);margin-top:6px}
+.heatleg .hsel{display:inline-flex;border:1px solid var(--bd);border-radius:7px;overflow:hidden}
+.heatleg .hsel button{font:600 10.5px/1 inherit;font-family:inherit;background:var(--panel);color:var(--mut);border:none;padding:5px 8px;cursor:pointer}
+.heatleg .hsel button.on{background:rgba(63,189,241,.14);color:var(--cyan)}
+.heatleg .hgrad{display:inline-block;width:120px;height:9px;border-radius:5px}
+.heatleg .hcvd{display:inline-flex;align-items:center;gap:4px;cursor:pointer;user-select:none}
+.heattip{position:fixed;z-index:120;pointer-events:none;background:var(--panel3);border:1px solid var(--bd2);border-radius:8px;padding:7px 10px;font-size:11.5px;color:var(--tx);box-shadow:0 6px 18px rgba(0,0,0,.35);display:none;min-width:170px;font-variant-numeric:tabular-nums}
+.heattip .n{color:var(--mut);font-size:10.5px;margin-bottom:4px}.heattip div{display:flex;justify-content:space-between;gap:14px}.heattip div i{font-style:normal;color:var(--mut2)}
 /* news on stock cards + detail panel */
 .cnews{margin-top:9px;padding-top:7px;border-top:1px dashed var(--bd)}
 .cnews .cnl{font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--cyan);display:flex;justify-content:space-between;align-items:center}
@@ -682,7 +699,7 @@ const _vixT=(DATA.indices.find(i=>i.key==='VIX')||{}).value;
 const _t10=(DATA.indices.find(i=>i.key==='UST10Y')||{}).value;
 function isLight(){return document.documentElement.getAttribute('data-theme')==='light';}
 function themeLabel(){return isLight()?'☀️ Light':'🌙 Dark';}
-function toggleTheme(){const n=isLight()?'dark':'light';if(n==='light')document.documentElement.setAttribute('data-theme','light');else document.documentElement.removeAttribute('data-theme');try{localStorage.setItem('aiF_theme',n);}catch(e){}document.getElementById('thm').innerHTML='<b>'+themeLabel()+'</b>';const ov=document.getElementById('ov');if(ov&&ov.classList.contains('on')&&window._lastModal)openM(window._lastModal);}
+function toggleTheme(){const n=isLight()?'dark':'light';if(n==='light')document.documentElement.setAttribute('data-theme','light');else document.documentElement.removeAttribute('data-theme');try{localStorage.setItem('aiF_theme',n);}catch(e){}document.getElementById('thm').innerHTML='<b>'+themeLabel()+'</b>';const ov=document.getElementById('ov');if(ov&&ov.classList.contains('on')&&window._lastModal)openM(window._lastModal);if(document.querySelector('#board .heat'))render();}
 document.getElementById('pulse').innerHTML=`<span class="pill thbtn" id="thm" onclick="toggleTheme()" title="Switch between dark (default) and light"><b>${themeLabel()}</b></span><span class="pill">VIX <b>${_vixT!=null?_vixT:mp.vix}</b></span><span class="pill">10Y <b>${_t10!=null?_t10.toFixed(2)+'%':'—'}</b></span><span class="pill">Fear/Greed <b style="color:var(--amb)">${mp.fear_greed.value} ${mp.fear_greed.label}</b></span><span class="pill">Breadth <b>${mp.breadth.overbought_pct}%</b> ob / <b>${mp.breadth.oversold_pct}%</b> os</span>`;
 document.getElementById('cnt').textContent=DATA.sectors.flatMap(s=>s.tickers).length+' tracked names · '+DATA.sectors.length+' sectors · '+Object.keys(CAT).length+' more searchable';
 document.getElementById('asof').innerHTML='as of '+DATA.as_of+' &nbsp;·&nbsp; <b style="color:#4ea1ff">⟳ Last refreshed: '+(DATA.generated||'').replace(/\s*\(.*\)/,'')+'</b>';
@@ -802,13 +819,14 @@ function render(){
  const tb=document.getElementById('vt-table'),cb=document.getElementById('vt-cards');if(tb){tb.classList.toggle('on',VIEW==='table');cb.classList.toggle('on',VIEW!=='table');}
  const body=ts=>VIEW==='table'?listTable(ts):`<div class="grid">${ts.map(card).join('')}</div>`;
  if(sort==='sector'){
-  board.innerHTML=DATA.sectors.map(sec=>{const ts=sec.tickers.filter(match);if(!ts.length)return'';return `<div class="sector"><div class="sechd"><h2>${sec.name}</h2><span class="bl">${sec.blurb}</span><span class="cnt">${ts.length}</span>${sec.avg_change!=null?`<span class="cnt" style="color:${sec.avg_change>=0?'var(--grn)':'var(--red)'}">avg ${pct(sec.avg_change)}</span>`:''}</div>${body(ts)}</div>`;}).join('')||'<div class="sub" style="padding:30px 0">No matches.</div>';
+  board.innerHTML=DATA.sectors.map(sec=>{const ts=sec.tickers.filter(match);if(!ts.length)return'';const hid=heatHidden(sec.name);return `<div class="sector"><div class="sechd"><h2>${sec.name}</h2><span class="bl">${sec.blurb}</span><span class="cnt">${ts.length}</span>${sec.avg_change!=null?`<span class="cnt" style="color:${sec.avg_change>=0?'var(--grn)':'var(--red)'}">avg ${pct(sec.avg_change)}</span>`:''}<button class="hbtn${hid?'':' on'}" onclick="toggleHeat(${JSON.stringify(sec.name).replace(/"/g,'&quot;')})" title="${hid?'Show':'Hide'} this sector's heatmap">▦ Heatmap ${hid?'show':'hide'}</button></div>${hid?'':`<div class="heatwrap"><div class="heat" data-tk="${ts.join(',')}"></div>${heatLegend()}</div>`}${body(ts)}</div>`;}).join('')||'<div class="sub" style="padding:30px 0">No matches.</div>';
  }else{
   let ts=DATA.sectors.flatMap(s=>s.tickers).filter(match);
   const key={chg:t=>C[t].change_pct??-999,chgu:t=>-(C[t].change_pct??999),rsi:t=>C[t].rsi??-1,upside:t=>upside(C[t])??-999,sent:t=>C[t].sentiment?C[t].sentiment.score:-1,mcap:t=>C[t].market_cap??0}[sort];
   ts.sort((a,b)=>key(b)-key(a));board.innerHTML=body(ts);
  }
  for(const t of OPEN){const tx=document.getElementById('lx-'+t);if(tx&&!tx.dataset.done){OPEN.delete(t);toggleRow(t);}}
+ drawHeats();
  renderBrowse(q);
  document.body.classList.toggle('searching',!!q);
 }
@@ -1016,7 +1034,8 @@ function assetModal(key){
  document.getElementById('modal').innerHTML=html;document.getElementById('ov').classList.add('on');document.body.style.overflow='hidden';CUR=null;
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM();});
-window.addEventListener('resize',()=>{if(CUR)drawChart(CUR.t,CUR.tf);});
+window.addEventListener('resize',()=>{if(CUR)drawChart(CUR.t,CUR.tf);clearTimeout(window._hrs);window._hrs=setTimeout(drawHeats,120);});
+window.addEventListener('scroll',()=>{const e=document.getElementById('heattip');if(e)e.style.display='none';},{passive:true});
 function fmtRevM(m){if(m==null)return'—';return m>=1000? '$'+(m/1000).toFixed(2)+'B' : '$'+m.toFixed(1)+'M';}
 function fmtEps(v){if(v==null)return'—';return (v<0?'-$':'$')+Math.abs(v).toFixed(2);}
 function erSurp(est,act){if(est==null||act==null||est===0)return null;return (act-est)/Math.abs(est)*100;}
@@ -1063,6 +1082,41 @@ function renderNews(){
   (L.length?L.map(item).join(''):'<div class="nwe">No stories for this filter in the window.</div>')+
   `<div class="nwsrc">Headlines &amp; sentiment labels: Alpha Vantage NEWS_SENTIMENT, filtered to your list · updated ${asof} · each headline opens the publisher's page. Dot = overall tone, chip colour = tone toward that ticker.</div></div>`;
 }
+// ---- sector heatmaps (squarified treemap; size ∝ √market cap; colour = day % / RSI / upside) ----
+let HEAT={hide:{},by:'chg',cvd:0};
+try{const h=JSON.parse(localStorage.getItem('aiF_heat')||'null');if(h&&typeof h==='object')HEAT=Object.assign(HEAT,h,{hide:Object.assign({},h.hide||{})});}catch(e){}
+function heatSave(){try{localStorage.setItem('aiF_heat',JSON.stringify(HEAT));}catch(e){}}
+function heatHidden(n){return !!HEAT.hide[n];}
+function toggleHeat(n){HEAT.hide[n]=!HEAT.hide[n];heatSave();render();}
+function setHeat(k,v){HEAT[k]=v;heatSave();render();}
+const HEATBY={chg:{l:'Day %',cap:4,v:t=>C[t].change_pct,f:v=>(v>=0?'+':'')+v.toFixed(2)+'%',lo:'−4%',hi:'+4%'},
+ rsi:{l:'RSI',cap:25,v:t=>C[t].rsi==null?null:50-C[t].rsi,raw:t=>C[t].rsi,f:(v,t)=>'RSI '+Math.round(C[t].rsi),lo:'overbought 75',hi:'oversold 25'},
+ up:{l:'Analyst upside',cap:50,v:t=>upside(C[t]),f:v=>(v>=0?'+':'')+Math.round(v)+'%',lo:'−50%',hi:'+50%'}};
+function heatPoles(){const L=isLight();const pos=HEAT.cvd?(L?[37,99,235]:[59,130,246]):(L?[23,143,82]:[31,157,92]);const neg=L?[210,58,65]:[214,69,75];const mid=L?[226,231,239]:[42,49,66];return{pos,neg,mid};}
+function heatColor(v,cap){const P=heatPoles();if(v==null||isNaN(v))return{bg:`rgb(${P.mid})`,fg:'var(--mut)'};
+ const t=Math.pow(Math.min(1,Math.abs(v)/cap),0.8);const e=v>=0?P.pos:P.neg;const c=P.mid.map((m,i)=>Math.round(m+(e[i]-m)*t));
+ const lum=(0.2126*c[0]+0.7152*c[1]+0.0722*c[2])/255;return{bg:`rgb(${c})`,fg:lum>0.55?'#141a26':'#fff'};}
+function heatLegend(){const P=heatPoles();const g=`linear-gradient(90deg,rgb(${P.neg}),rgb(${P.mid}),rgb(${P.pos}))`;const B=HEATBY[HEAT.by];
+ return `<div class="heatleg"><span>Colour</span><span class="hsel">${Object.entries(HEATBY).map(([k,o])=>`<button class="${HEAT.by===k?'on':''}" onclick="setHeat('by','${k}')">${o.l}</button>`).join('')}</span><span>${B.lo}</span><span class="hgrad" style="background:${g}"></span><span>${B.hi}</span><span>· size ∝ √ market cap · click a tile for details</span><label class="hcvd" title="Blue instead of green for positive values — easier to tell apart with red-green colour blindness"><input type="checkbox" ${HEAT.cvd?'checked':''} onchange="setHeat('cvd',this.checked?1:0)">colour-blind palette</label></div>`;}
+function squarify(items,x,y,w,h){const out=[];let rest=items.slice();const total=rest.reduce((a,b)=>a+b.a,0);if(!total)return out;const scale=w*h/total;rest=rest.map(o=>Object.assign({},o,{s:o.a*scale}));
+ function worst(row,side){const sum=row.reduce((a,b)=>a+b.s,0);let mx=0;for(const o of row){const r1=side*side*o.s/(sum*sum),r2=sum*sum/(side*side*o.s);mx=Math.max(mx,r1,r2);}return mx;}
+ while(rest.length){const side=Math.min(w,h);let row=[rest[0]];let i=1;while(i<rest.length&&worst(row.concat(rest[i]),side)<=worst(row,side)){row.push(rest[i]);i++;}
+  const sum=row.reduce((a,b)=>a+b.s,0);
+  if(w>=h){const cw=sum/h;let cy=y;for(const o of row){const ch=o.s/cw;out.push(Object.assign(o,{x,y:cy,w:cw,h:ch}));cy+=ch;}x+=cw;w-=cw;}
+  else{const rh=sum/w;let cx=x;for(const o of row){const cw=o.s/rh;out.push(Object.assign(o,{x:cx,y,w:cw,h:rh}));cx+=cw;}y+=rh;h-=rh;}
+  rest=rest.slice(i);}
+ return out;}
+function drawHeats(){const B=HEATBY[HEAT.by];heatTip(null);
+ document.querySelectorAll('#board .heat').forEach(el=>{const ts=(el.dataset.tk||'').split(',').filter(t=>C[t]);const W=el.clientWidth;if(!W||!ts.length){el.innerHTML='';return;}
+  const H=Math.round(Math.max(110,Math.min(230,W*(ts.length>=8?0.2:ts.length>=4?0.15:0.11))));el.style.height=H+'px';
+  const it=ts.map(t=>({t,a:Math.sqrt(Math.max(C[t].market_cap||0,1e9))})).sort((a,b)=>b.a-a.a);
+  const G=1;el.innerHTML=squarify(it,0,0,W,H).map(o=>{const v=B.v(o.t);const col=heatColor(v,B.cap);const cls=(o.w<46||o.h<30)?'xs':(o.w<80||o.h<44)?'sm':'';
+   const val=v==null?'—':(HEAT.by==='rsi'?Math.round(C[o.t].rsi):B.f(v,o.t));
+   return `<div class="ht ${cls}" style="left:${(o.x+G).toFixed(1)}px;top:${(o.y+G).toFixed(1)}px;width:${Math.max(0,o.w-2*G).toFixed(1)}px;height:${Math.max(0,o.h-2*G).toFixed(1)}px;background:${col.bg};color:${col.fg}" onclick="openM('${o.t}')" onmousemove="heatTip(event,'${o.t}')" onmouseleave="heatTip(null)"><b>${o.t}</b><span>${val}</span></div>`;}).join('');});}
+function heatTip(ev,t){let el=document.getElementById('heattip');if(!el){el=document.createElement('div');el.id='heattip';el.className='heattip';document.body.appendChild(el);}
+ if(!ev){el.style.display='none';return;}const c=C[t];const u=upside(c);
+ el.innerHTML=`<div class="n"><b style="color:var(--tx)">${t}</b> · ${c.name||''}</div><div><i>Price</i><b>${px(c.price)}</b></div><div><i>Day</i><b class="${cls(c.change_pct)}">${pct(c.change_pct)}</b></div><div><i>RSI</i><b>${c.rsi??'—'}</b></div><div><i>Analyst upside</i><b>${u==null?'—':(u>=0?'+':'')+u.toFixed(0)+'%'}</b></div><div><i>Mkt cap</i><b>${fmtB(c.market_cap)}</b></div>`;
+ el.style.display='block';const x=Math.min(ev.clientX+14,innerWidth-el.offsetWidth-8),y=Math.min(ev.clientY+14,innerHeight-el.offsetHeight-8);el.style.left=x+'px';el.style.top=y+'px';}
 // ---- company headlines on the stock card ("See card" + Cards view) and in the detail panel ----
 function newsFor(t){const N=(DATA.news&&DATA.news.items)||[];return N.filter(i=>(i.tk||[]).some(x=>x[0]===t));}
 function nwTone(i,t){const x=(i.tk||[]).find(y=>y[0]===t);return x?x[1]:i.sent;}

@@ -47,7 +47,7 @@ html = r'''<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/>
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
-.wrap{max-width:1500px;margin:0 auto;padding:16px 18px 60px}
+.wrap{max-width:1840px;margin:0 auto;padding:16px 18px 60px}
 header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:8px}
 h1{font-size:19px;margin:0;font-weight:700;letter-spacing:.2px}h1 span{color:var(--cyan)}
 .sub{color:var(--mut);font-size:12px}
@@ -235,11 +235,43 @@ footer{margin-top:34px;border-top:1px solid var(--bd);padding-top:16px;color:var
 .copybtn.done{background:var(--grn)}
 .clrbtn{background:transparent;border:1px solid var(--bd2);color:var(--mut);border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer}
 /* earnings rail */
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 296px;gap:18px;align-items:start}
-@media(max-width:1150px){.layout{grid-template-columns:minmax(0,1fr)}}
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr) 300px;grid-template-areas:"er main nw";gap:16px;align-items:start}
+.layout.noer{grid-template-columns:34px minmax(0,1fr) 300px}
+.layout.nonw{grid-template-columns:268px minmax(0,1fr) 34px}
+.layout.noer.nonw{grid-template-columns:34px minmax(0,1fr) 34px}
+#maincol{grid-area:main}#earnrail{grid-area:er}#newsrail{grid-area:nw}
 #maincol,.sector{min-width:0}
-#earnrail{position:sticky;top:12px}
-@media(max-width:1150px){#earnrail{position:static}}
+.rail{position:sticky;top:58px;max-height:calc(100vh - 70px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding-right:3px;min-width:0}
+.rhide{margin-left:auto;align-self:center;background:transparent;border:1px solid var(--bd);color:var(--mut2);border-radius:7px;padding:2px 7px;font:600 10.5px/1.4 inherit;font-family:inherit;cursor:pointer;white-space:nowrap}
+.rhide:hover{color:var(--tx);border-color:var(--bd2)}
+.railtab{display:none;align-items:center;justify-content:center;gap:6px;width:34px;min-height:170px;writing-mode:vertical-rl;background:var(--panel);border:1px solid var(--bd);border-radius:10px;color:var(--mut);font:600 12px/1 inherit;font-family:inherit;cursor:pointer;padding:12px 0}
+.railtab:hover{color:var(--tx);border-color:var(--cyan)}
+.layout.noer #earnrail .rbody,.layout.nonw #newsrail .rbody{display:none}
+.layout.noer #earnrail .railtab,.layout.nonw #newsrail .railtab{display:flex}
+@media(max-width:1279px){.layout,.layout.noer,.layout.nonw,.layout.noer.nonw{grid-template-columns:minmax(0,1fr);grid-template-areas:"main" "er" "nw"}
+ .rail{position:static;max-height:none;overflow:visible}.railtab{writing-mode:horizontal-tb;width:auto;min-height:0;padding:9px 14px;justify-content:flex-start}}
+/* news rail */
+.erhd.nwhd h2{color:var(--cyan)}
+.rail .erhd{flex-wrap:wrap;row-gap:2px}.rail .erhd h2{white-space:nowrap}.rail .erhd .rhide{order:2}.rail .erhd .bl{order:3;flex-basis:100%}
+.nwfs{display:flex;gap:5px;flex-wrap:wrap;margin:-2px 0 9px}
+.nwf{background:var(--card);border:1px solid var(--bd);color:var(--mut);border-radius:99px;padding:3px 9px;font:600 11px/1.3 inherit;font-family:inherit;cursor:pointer}
+.nwf:hover{color:var(--tx)}.nwf.on{color:var(--cyan);border-color:var(--cyan)}
+.nwi{background:var(--panel);border:1px solid var(--bd);border-left:3px solid var(--cyan);border-radius:10px;padding:9px 11px;margin-bottom:8px}
+.nwi.macro{border-left-color:var(--amb)}
+.nwm{font-size:10.5px;color:var(--mut2);display:flex;align-items:center;gap:6px;min-width:0}
+.nwm .src{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}.nwm>span:not(.src):not(.nwd){white-space:nowrap;flex:0 0 auto}
+.nwd{width:7px;height:7px;border-radius:50%;flex:0 0 7px;background:var(--mut2)}
+.nwd.bull{background:var(--grn)}.nwd.sbull{background:color-mix(in srgb,var(--grn) 55%,var(--mut2))}
+.nwd.bear{background:var(--red)}.nwd.sbear{background:color-mix(in srgb,var(--red) 55%,var(--mut2))}
+.nwk{color:var(--amb);font-weight:700}
+.nwt{display:block;color:var(--tx);font-size:12.5px;line-height:1.38;font-weight:600;text-decoration:none;margin:4px 0 6px;overflow-wrap:anywhere}
+.nwt:hover{color:var(--cyan);text-decoration:underline}
+.nwtk{display:flex;gap:4px;flex-wrap:wrap}
+.nwc{font:700 10.5px/1.3 inherit;font-family:inherit;padding:1px 7px;border-radius:6px;cursor:pointer;background:var(--panel2);border:1px solid var(--bd2);color:var(--tx2)}
+.nwc.bull,.nwc.sbull{color:var(--grn);border-color:color-mix(in srgb,var(--grn) 45%,transparent)}
+.nwc.bear,.nwc.sbear{color:var(--red);border-color:color-mix(in srgb,var(--red) 45%,transparent)}
+.nwe{font-size:12px;color:var(--mut);padding:10px 2px}
+.nwsrc{font-size:10px;color:var(--mut2);margin:4px 0 6px;line-height:1.45}
 .erhd{display:flex;align-items:baseline;gap:8px;border-bottom:1px solid var(--bd);padding-bottom:7px;margin-bottom:10px}
 .erhd h2{font-size:14px;margin:0;font-weight:700;color:var(--amb)}
 .erhd .bl{color:var(--mut2);font-size:11px}
@@ -284,7 +316,7 @@ body.searching #calendar,body.searching #predict,body.searching #research,body.s
 .tabbtn{flex:0 0 auto;font:600 12.5px/1 inherit;font-family:inherit;color:var(--mut);background:var(--card);border:1px solid var(--bd);border-radius:99px;padding:8px 14px;cursor:pointer;transition:.15s;white-space:nowrap}
 .tabbtn:hover{color:var(--tx);border-color:var(--cyan)}
 .tabbtn.on{color:var(--cyan);border-color:var(--cyan);background:rgba(56,189,248,.08)}
-#strip,#board,#research,#browse,#earnrail{scroll-margin-top:64px}
+#strip,#board,#research,#browse,#earnrail,#newsrail{scroll-margin-top:64px}
 /* ---- deep research ---- */
 /* ---- events calendar ---- */
 #calendar{margin:6px 0 14px;scroll-margin-top:64px}
@@ -505,7 +537,8 @@ details.pmfold>summary:hover{background:rgba(168,85,247,.04)}details.pmfold[open
 <nav class="tabs" id="tabs">
  <button class="tabbtn" onclick="goTab(this,'strip')">📊 Markets</button>
  <button class="tabbtn" onclick="goTab(this,'board')">🗂 My List</button>
- <button class="tabbtn" onclick="goTab(this,'earnrail')">📰 Earnings Reports</button>
+ <button class="tabbtn" onclick="goTab(this,'earnrail')">📊 Earnings Reports</button>
+ <button class="tabbtn" onclick="goTab(this,'newsrail')">📰 News</button>
  <button class="tabbtn" onclick="goTab(this,'calendar')">📅 Calendar</button>
  <button class="tabbtn" onclick="goTab(this,'compute')">🖥 Compute</button>
  <button class="tabbtn" onclick="goTab(this,'predict')">🎯 Prediction Markets</button>
@@ -533,9 +566,9 @@ details.pmfold>summary:hover{background:rgba(168,85,247,.04)}details.pmfold[open
 <div id="predict"></div>
 <div id="settled"></div>
 <div id="research"></div>
-</div><aside id="earnrail"></aside></div>
+</div><aside id="earnrail" class="rail"></aside><aside id="newsrail" class="rail"></aside></div>
 <footer>
- <div><b>Data sources:</b> Prices, technicals, analyst ratings &amp; fundamentals — Stocklake. VIX/breadth/fear-greed — Stocklake. Brent, Gold, Silver, BTC, ETH, 10Y Treasury — Alpha Vantage. Retail sentiment &amp; messages — Stocktwits. Insider (Form 4), net buy/sell &amp; float — Massive/SEC. Institutional % &amp; top holders — Alpha Vantage (13F). Earnings digests — Bigdata.com. Compute prices (GPU rental $/GPU-hr and model-API $/M tokens) — Ornn OCPI / OTPI. Charts — Massive (~2yr daily, all names) + Alpha Vantage (monthly long-history for NVDA/MSFT/AMZN). Index levels via liquid ETF proxies where noted.</div>
+ <div><b>Data sources:</b> Prices, technicals, analyst ratings &amp; fundamentals — Stocklake. VIX/breadth/fear-greed — Stocklake. Brent, Gold, Silver, BTC, ETH, 10Y Treasury — Alpha Vantage. News headlines &amp; sentiment labels — Alpha Vantage (links open the publisher). Retail sentiment &amp; messages — Stocktwits. Insider (Form 4), net buy/sell &amp; float — Massive/SEC. Institutional % &amp; top holders — Alpha Vantage (13F). Earnings digests — Bigdata.com. Compute prices (GPU rental $/GPU-hr and model-API $/M tokens) — Ornn OCPI / OTPI. Charts — Massive (~2yr daily, all names) + Alpha Vantage (monthly long-history for NVDA/MSFT/AMZN). Index levels via liquid ETF proxies where noted.</div>
  <div class="mscibox" id="mscibox"></div>
  <div style="margin-top:8px"><b>Snapshot:</b> <span id="asof2"></span>. 1D shows the latest session (intraday not entitled). 3Y/5Y/MAX show full history where monthly data exists, otherwise the ~2-year window (see chart date axis). Insider buy/sell covers open-market transactions since Feb 2026. Prices delayed; auto-refreshes on schedule. Opportunities/threats are qualitative, not recommendations.</div>
  <div class="disc">For informational purposes only. Not investment advice. Verify all figures against primary sources before acting.</div>
@@ -991,7 +1024,35 @@ function renderEarnRail(){
    ${e.rx!=null?`<div class="errx ${e.rx>=0?'up':'down'}">${e.rx>=0?'▲':'▼'} ${e.rx>=0?'+':''}${e.rx}% next-session reaction</div>`:''}
    ${e.note?`<div class="ernote">${e.note}</div>`:''}
   </div>`;};
- el.innerHTML=`<div class="erhd"><h2>📊 Earnings Reports</h2><span class="bl">actual vs analyst consensus · newest first</span></div>`+R.map(card).join('');
+ el.innerHTML=railTab('er','📊 Earnings')+`<div class="rbody"><div class="erhd"><h2>📊 Earnings Reports</h2><span class="bl">vs consensus · newest first</span><button class="rhide" onclick="setRail('er',0)" title="Hide the earnings panel">✕ hide</button></div>`+R.map(card).join('')+'</div>';
+}
+// ---- side rails (earnings left, news right) — per-viewer show/hide, remembered in localStorage ----
+let RAILS={er:1,nw:1};
+try{const s=JSON.parse(localStorage.getItem('aiF_rails')||'null');if(s&&typeof s==='object')RAILS=Object.assign(RAILS,s);}catch(e){}
+function applyRails(){const L=document.querySelector('.layout');if(!L)return;L.classList.toggle('noer',!RAILS.er);L.classList.toggle('nonw',!RAILS.nw);}
+function setRail(k,v){RAILS[k]=v?1:0;try{localStorage.setItem('aiF_rails',JSON.stringify(RAILS));}catch(e){}applyRails();}
+function railTab(k,label){return `<button class="railtab" onclick="setRail('${k}',1)" title="Show this panel">${label} ${k==='er'?'›':'‹'}</button>`;}
+// ---- news feed (Alpha Vantage NEWS_SENTIMENT via news_set.py → DATA.news) ----
+let NWF='all';
+const NWLAB={bull:'Bullish',sbull:'Somewhat bullish',neu:'Neutral',sbear:'Somewhat bearish',bear:'Bearish'};
+function nwEsc(x){return String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function nwAgo(ts){const m=(Date.now()-Date.parse(ts))/60000;if(!(m>=0))return '';if(m<60)return Math.max(1,Math.round(m))+'m ago';if(m<1440)return Math.round(m/60)+'h ago';return Math.round(m/1440)+'d ago';}
+function setNWF(f){NWF=f;renderNews();}
+function renderNews(){
+ const el=document.getElementById('newsrail');if(!el)return;
+ const N=(DATA.news&&DATA.news.items)||[];
+ let L=N;
+ if(NWF==='co')L=N.filter(i=>i.k==='co');else if(NWF==='macro')L=N.filter(i=>i.k==='macro');else if(NWF!=='all')L=N.filter(i=>(i.tk||[]).some(t=>t[0]===NWF));
+ const item=i=>`<div class="nwi${i.k==='macro'?' macro':''}"><div class="nwm"><span class="nwd ${i.sent}" title="Overall sentiment: ${NWLAB[i.sent]||'—'} (${i.ss})"></span><span class="src">${nwEsc(i.s)}</span><span>· ${nwAgo(i.ts)}</span>${i.k==='macro'?'<span class="nwk">· markets</span>':''}</div>`+
+  `<a class="nwt" href="${nwEsc(i.u)}" target="_blank" rel="noopener noreferrer">${nwEsc(i.t)}</a>`+
+  ((i.tk||[]).length?`<div class="nwtk">${i.tk.map(t=>`<button class="nwc ${t[1]}" onclick="setNWF('${t[0]}')" title="${t[0]} · ${NWLAB[t[1]]||''} (${t[2]}) — show only ${t[0]} stories">${t[0]}</button>`).join('')}</div>`:'')+`</div>`;
+ const pill=(f,l)=>`<button class="nwf${NWF===f?' on':''}" onclick="setNWF('${f}')">${l}</button>`;
+ const tkp=(NWF!=='all'&&NWF!=='co'&&NWF!=='macro')?`<button class="nwf on" onclick="setNWF('all')" title="Clear the ticker filter">${nwEsc(NWF)} ✕</button>`:'';
+ const asof=DATA.news&&DATA.news.asof?DATA.news.asof.replace('T',' '):'—';
+ el.innerHTML=railTab('nw','📰 News')+`<div class="rbody"><div class="erhd nwhd"><h2>📰 News</h2><span class="bl">${N.length} stories · last ${(DATA.news&&DATA.news.keep_h)||72}h</span><button class="rhide" onclick="setRail('nw',0)" title="Hide the news panel">✕ hide</button></div>`+
+  `<div class="nwfs">${pill('all','All')}${pill('co','My list')}${pill('macro','Markets')}${tkp}</div>`+
+  (L.length?L.map(item).join(''):'<div class="nwe">No stories for this filter in the window.</div>')+
+  `<div class="nwsrc">Headlines &amp; sentiment labels: Alpha Vantage NEWS_SENTIMENT, filtered to your list · updated ${asof} · each headline opens the publisher's page. Dot = overall tone, chip colour = tone toward that ticker.</div></div>`;
 }
 // ---- events calendar ----
 let CALF='all';
@@ -1490,12 +1551,14 @@ function openResearch(i,textOnly){
 }
 // ---- tabs ----
 function goTab(btn,id){
+ if(id==='earnrail'&&!RAILS.er)setRail('er',1);
+ if(id==='newsrail'&&!RAILS.nw)setRail('nw',1);
  document.querySelectorAll('.tabbtn').forEach(b=>b.classList.remove('on'));
  btn.classList.add('on');
  const t=document.getElementById(id);
  if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
 }
-renderPending();render();renderEarnRail();renderCalendar();renderCompute();renderPredict();renderSettled();renderResearch();renderStripGhosts();
+applyRails();renderPending();render();renderEarnRail();renderNews();renderCalendar();renderCompute();renderPredict();renderSettled();renderResearch();renderStripGhosts();
 </script></body></html>'''
 html=html.replace('__PAYLOAD__',payload)
 open('index.html','w').write(html)

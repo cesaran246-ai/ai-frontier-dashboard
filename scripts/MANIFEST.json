@@ -3,7 +3,7 @@
  "repo": "cesaran246-ai/ai-frontier-dashboard",
  "branch": "main",
  "raw_base": "https://raw.githubusercontent.com/cesaran246-ai/ai-frontier-dashboard/main/scripts/",
- "updated": "2026-09-24",
+ "updated": "2026-09-25 (Stocktwits consensus in the news rail: st_set.py; build_html_v3.py + t_all.js updated)",
  "code": [
   {
    "file": "build_html_v3.py",
@@ -84,6 +84,11 @@
    "file": "news_set.py",
    "dest": "news_set.py",
    "role": "Alpha Vantage NEWS_SENTIMENT result file -> dashboard_data_v3.json['news'] (filtered headline feed for the right-hand News rail; merges and keeps 72h)"
+  },
+  {
+   "file": "st_set.py",
+   "dest": "st_set.py",
+   "role": "Stocktwits crowd consensus (st_raw.json from a read-only subagent) -> dashboard_data_v3.json news.st + companies[*].sentiment; run after news_set.py"
   }
  ],
  "config": [

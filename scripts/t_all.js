@@ -22,7 +22,7 @@ const {chromium}=require('playwright');
  await p.evaluate(()=>setHeat('by','rsi'));await p.waitForTimeout(100); r.heatRsi=await p.$eval('#board .heat .ht span',e=>e.innerText); await p.evaluate(()=>setHeat('by','chg'));await p.waitForTimeout(100);
  r.news=await p.$$eval('#newsrail .nwi',x=>x.length); r.newsMacro=await p.$$eval('#newsrail .nwi.macro',x=>x.length);
  r.railCols=await p.evaluate(()=>getComputedStyle(document.querySelector('.layout')).gridTemplateColumns);
- await p.evaluate(()=>setNWF('co'));await p.waitForTimeout(100); r.newsMyList=await p.$$eval('#newsrail .nwi',x=>x.length); await p.evaluate(()=>setNWF('all'));
+ await p.evaluate(()=>setNWF('co'));await p.waitForTimeout(100); r.newsMyList=await p.$$eval('#newsrail .nwi',x=>x.length); await p.evaluate(()=>setNWF('all')); r.stDigest=await p.$$eval('#newsrail .nwi.st .stc',x=>x.length); await p.evaluate(()=>setNWF('st'));await p.waitForTimeout(100); r.stCards=await p.$$eval('#newsrail .nwi.st .stg',x=>x.length); r.stTk=await p.evaluate(()=>{const o=(DATA.news.st.items||[])[0];if(!o)return null;setNWF(o.tk);const f=document.querySelector('#newsrail .nwi');const out=[o.tk,!!(f&&f.classList.contains('st')),document.querySelectorAll('#newsrail .nwi').length];setNWF('all');return out;});
  await p.evaluate(()=>{setRail('er',0);setRail('nw',0);});await p.waitForTimeout(150);
  r.railsHidden=await p.evaluate(()=>[document.querySelector('.layout').className,[...document.querySelectorAll('.railtab')].filter(b=>getComputedStyle(b).display!=='none').length,getComputedStyle(document.querySelector('#newsrail .rbody')).display]);
  await p.evaluate(()=>{setRail('er',1);setRail('nw',1);});await p.waitForTimeout(150);

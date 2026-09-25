@@ -286,6 +286,14 @@ footer{margin-top:34px;border-top:1px solid var(--bd);padding-top:16px;color:var
 .nwf:hover{color:var(--tx)}.nwf.on{color:var(--cyan);border-color:var(--cyan)}
 .nwi{background:var(--panel);border:1px solid var(--bd);border-left:3px solid var(--cyan);border-radius:10px;padding:9px 11px;margin-bottom:8px}
 .nwi.macro{border-left-color:var(--amb)}
+.nwi.st{border-left-color:var(--pur)}
+.nwk.stk{color:var(--pur)}
+.stg{position:relative;height:6px;border-radius:4px;margin:7px 0 5px;background:linear-gradient(90deg,var(--red) 0%,color-mix(in srgb,var(--red) 35%,var(--bar)) 30%,var(--bar) 50%,color-mix(in srgb,var(--grn) 35%,var(--bar)) 70%,var(--grn) 100%)}
+.stg i{position:absolute;top:-3px;width:4px;height:12px;border-radius:2px;background:var(--tx);transform:translateX(-2px)}
+.stm{font-size:10.5px;color:var(--mut);line-height:1.45}.stm b{color:var(--tx)}
+.stchips{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.stc{font:700 10.5px/1.3 inherit;font-family:inherit;padding:2px 7px;border-radius:6px;cursor:pointer;background:var(--panel2);border:1px solid var(--bd2);color:var(--tx2);font-variant-numeric:tabular-nums}
+.stc.bull{color:var(--grn);border-color:color-mix(in srgb,var(--grn) 45%,transparent)}.stc.bear{color:var(--red);border-color:color-mix(in srgb,var(--red) 45%,transparent)}
 .nwm{font-size:10.5px;color:var(--mut2);display:flex;align-items:center;gap:6px;min-width:0}
 .nwm .src{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}.nwm>span:not(.src):not(.nwd){white-space:nowrap;flex:0 0 auto}
 .nwd{width:7px;height:7px;border-radius:50%;flex:0 0 7px;background:var(--mut2)}
@@ -596,7 +604,7 @@ details.pmfold>summary:hover{background:rgba(168,85,247,.04)}details.pmfold[open
 <div id="research"></div>
 </div><aside id="earnrail" class="rail"></aside><aside id="newsrail" class="rail"></aside></div>
 <footer>
- <div><b>Data sources:</b> Prices, technicals, analyst ratings &amp; fundamentals — Stocklake. VIX/breadth/fear-greed — Stocklake. Brent, Gold, Silver, BTC, ETH, 10Y Treasury — Alpha Vantage. News headlines &amp; sentiment labels — Alpha Vantage (links open the publisher). Retail sentiment &amp; messages — Stocktwits. Insider (Form 4), net buy/sell &amp; float — Massive/SEC. Institutional % &amp; top holders — Alpha Vantage (13F). Earnings digests — Bigdata.com. Compute prices (GPU rental $/GPU-hr and model-API $/M tokens) — Ornn OCPI / OTPI. Charts — Massive (~2yr daily, all names) + Alpha Vantage (monthly long-history for NVDA/MSFT/AMZN). Index levels via liquid ETF proxies where noted.</div>
+ <div><b>Data sources:</b> Prices, technicals, analyst ratings &amp; fundamentals — Stocklake. VIX/breadth/fear-greed — Stocklake. Brent, Gold, Silver, BTC, ETH, 10Y Treasury — Alpha Vantage. News headlines &amp; sentiment labels — Alpha Vantage (links open the publisher). Retail sentiment, crowd-consensus cards &amp; messages — Stocktwits. Insider (Form 4), net buy/sell &amp; float — Massive/SEC. Institutional % &amp; top holders — Alpha Vantage (13F). Earnings digests — Bigdata.com. Compute prices (GPU rental $/GPU-hr and model-API $/M tokens) — Ornn OCPI / OTPI. Charts — Massive (~2yr daily, all names) + Alpha Vantage (monthly long-history for NVDA/MSFT/AMZN). Index levels via liquid ETF proxies where noted.</div>
  <div class="mscibox" id="mscibox"></div>
  <div style="margin-top:8px"><b>Snapshot:</b> <span id="asof2"></span>. 1D shows the latest session (intraday not entitled). 3Y/5Y/MAX show full history where monthly data exists, otherwise the ~2-year window (see chart date axis). Insider buy/sell covers open-market transactions since Feb 2026. Prices delayed; auto-refreshes on schedule. Opportunities/threats are qualitative, not recommendations.</div>
  <div class="disc">For informational purposes only. Not investment advice. Verify all figures against primary sources before acting.</div>
@@ -1072,18 +1080,35 @@ function setNWF(f){NWF=f;renderNews();}
 function renderNews(){
  const el=document.getElementById('newsrail');if(!el)return;
  const N=(DATA.news&&DATA.news.items)||[];
+ const STD=(DATA.news&&DATA.news.st)||null, ST=(STD&&STD.items)||[];
+ const stDigest=ST.length?[{k:'stdig',ts:STD.asof}]:[];
+ const byTs=a=>a.sort((x,y)=>(y.ts||'').localeCompare(x.ts||''));
+ const stAsItems=ST.map(o=>Object.assign({k:'st',ts:STD.asof},o));
  let L=N;
- if(NWF==='co')L=N.filter(i=>i.k==='co');else if(NWF==='macro')L=N.filter(i=>i.k==='macro');else if(NWF!=='all')L=N.filter(i=>(i.tk||[]).some(t=>t[0]===NWF));
- const item=i=>`<div class="nwi${i.k==='macro'?' macro':''}"><div class="nwm"><span class="nwd ${i.sent}" title="Overall sentiment: ${NWLAB[i.sent]||'—'} (${i.ss})"></span><span class="src">${nwEsc(i.s)}</span><span>· ${nwAgo(i.ts)}</span>${i.k==='macro'?'<span class="nwk">· markets</span>':''}</div>`+
+ if(NWF==='co')L=byTs(N.filter(i=>i.k==='co').concat(stDigest));
+ else if(NWF==='macro')L=N.filter(i=>i.k==='macro');
+ else if(NWF==='st')L=stAsItems;
+ else if(NWF!=='all')L=stAsItems.filter(o=>o.tk===NWF).concat(N.filter(i=>(i.tk||[]).some(t=>t[0]===NWF)));
+ else L=byTs(N.concat(stDigest));
+ const stLab=l=>String(l||'').replace(/_/g,' ').toLowerCase();
+ const stCard=o=>`<div class="nwi st"><div class="nwm"><span class="nwd ${o.dir}" title="Stocktwits consensus: ${stLab(o.label)}"></span><span class="src">Stocktwits</span><span>· ${nwAgo(o.ts)}</span><span class="nwk stk">· crowd consensus</span></div>`+
+  `<a class="nwt" href="${nwEsc(o.u)}" target="_blank" rel="noopener noreferrer">Crowd is ${stLab(o.label)} on ${nwEsc(o.tk)} — sentiment ${o.score}/100</a>`+
+  `<div class="stg" title="Stocktwits sentiment score ${o.score}/100 (0 = extremely bearish, 100 = extremely bullish)"><i style="left:${Math.max(0,Math.min(100,o.score))}%"></i></div>`+
+  `<div class="stm">${o.bull!=null?`<b>${Math.round(o.bull)}%</b> of tagged posts bullish · `:''}message volume <b>${stLab(o.vol)||'—'}</b>${o.delta!=null?` · tagged-bull ${o.delta>=0?'+':''}${Math.round(o.delta)} pts d/d`:''}</div>`+
+  `<div class="nwtk" style="margin-top:6px"><button class="nwc ${o.dir}" onclick="setNWF('${o.tk}')" title="Show only ${o.tk}">${o.tk}</button></div></div>`;
+ const stDig=i=>`<div class="nwi st"><div class="nwm"><span class="nwd"></span><span class="src">Stocktwits</span><span>· ${nwAgo(i.ts)}</span><span class="nwk stk">· crowd consensus</span></div>`+
+  `<a class="nwt" href="#" onclick="setNWF('st');return false">Where the crowd is one-sided: ${ST.length} name${ST.length>1?'s':''} on your list</a>`+
+  `<div class="stchips">${ST.map(o=>`<button class="stc ${o.dir}" onclick="setNWF('${o.tk}')" title="${o.tk}: ${stLab(o.label)} (${o.score}/100)">${o.tk} ${o.dir==='bull'?'▲':'▼'} ${o.score}</button>`).join('')}</div></div>`;
+ const item=i=>i.k==='stdig'?stDig(i):i.k==='st'?stCard(i):`<div class="nwi${i.k==='macro'?' macro':''}"><div class="nwm"><span class="nwd ${i.sent}" title="Overall sentiment: ${NWLAB[i.sent]||'—'} (${i.ss})"></span><span class="src">${nwEsc(i.s)}</span><span>· ${nwAgo(i.ts)}</span>${i.k==='macro'?'<span class="nwk">· markets</span>':''}</div>`+
   `<a class="nwt" href="${nwEsc(i.u)}" target="_blank" rel="noopener noreferrer">${nwEsc(i.t)}</a>`+
   ((i.tk||[]).length?`<div class="nwtk">${i.tk.map(t=>`<button class="nwc ${t[1]}" onclick="setNWF('${t[0]}')" title="${t[0]} · ${NWLAB[t[1]]||''} (${t[2]}) — show only ${t[0]} stories">${t[0]}</button>`).join('')}</div>`:'')+`</div>`;
  const pill=(f,l)=>`<button class="nwf${NWF===f?' on':''}" onclick="setNWF('${f}')">${l}</button>`;
- const tkp=(NWF!=='all'&&NWF!=='co'&&NWF!=='macro')?`<button class="nwf on" onclick="setNWF('all')" title="Clear the ticker filter">${nwEsc(NWF)} ✕</button>`:'';
+ const tkp=(NWF!=='all'&&NWF!=='co'&&NWF!=='macro'&&NWF!=='st')?`<button class="nwf on" onclick="setNWF('all')" title="Clear the ticker filter">${nwEsc(NWF)} ✕</button>`:'';
  const asof=DATA.news&&DATA.news.asof?DATA.news.asof.replace('T',' '):'—';
- el.innerHTML=railTab('nw','📰 News')+`<div class="rbody"><div class="erhd nwhd"><h2>📰 News</h2><span class="bl">${N.length} stories · last ${(DATA.news&&DATA.news.keep_h)||72}h</span><button class="rhide" onclick="setRail('nw',0)" title="Hide the news panel">✕ hide</button></div>`+
-  `<div class="nwfs">${pill('all','All')}${pill('co','My list')}${pill('macro','Markets')}${tkp}</div>`+
+ el.innerHTML=railTab('nw','📰 News')+`<div class="rbody"><div class="erhd nwhd"><h2>📰 News</h2><span class="bl">${N.length} stories · last ${(DATA.news&&DATA.news.keep_h)||72}h${ST.length?` · ${ST.length} crowd-consensus`:''}</span><button class="rhide" onclick="setRail('nw',0)" title="Hide the news panel">✕ hide</button></div>`+
+  `<div class="nwfs">${pill('all','All')}${pill('co','My list')}${pill('macro','Markets')}${ST.length?pill('st','💬 Stocktwits'):''}${tkp}</div>`+
   (L.length?L.map(item).join(''):'<div class="nwe">No stories for this filter in the window.</div>')+
-  `<div class="nwsrc">Headlines &amp; sentiment labels: Alpha Vantage NEWS_SENTIMENT, filtered to your list · updated ${asof} · each headline opens the publisher's page. Dot = overall tone, chip colour = tone toward that ticker.</div></div>`;
+  `<div class="nwsrc">Headlines &amp; sentiment labels: Alpha Vantage NEWS_SENTIMENT, filtered to your list · updated ${asof} · each headline opens the publisher's page. Dot = overall tone, chip colour = tone toward that ticker.${STD?` Crowd consensus: Stocktwits sentiment score (0–100) for names on your list, shown only where the crowd is one-sided (${nwEsc(STD.rule||'')}) · updated ${(STD.asof||'').replace('T',' ')}.`:''}</div></div>`;
 }
 // ---- sector heatmaps (squarified treemap; size ∝ √market cap; colour = day % / RSI / upside) ----
 let HEAT={hide:{},by:'chg',cvd:0};
